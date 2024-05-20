@@ -1,0 +1,230 @@
+
+<style>
+.profilepic {
+  margin-left: 12%;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.profilepic:hover .profilepic__content {
+  opacity: 1;
+}
+
+.profilepic:hover .profilepic__image {
+  opacity: .5;
+}
+
+.profilepic__image {
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity .2s ease-in-out;
+}
+
+.profilepic__content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+}
+
+.profilepic__icon {
+  color: white;
+  padding-bottom: 8px;
+}
+
+.fas {
+  font-size: 20px;
+}
+
+.profilepic__text {
+  text-transform: uppercase;
+  font-size: 12px;
+  width: 50%;
+  text-align: center;
+}
+</style>
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item active">Mi cuenta</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{usuario.Nombres}} {{usuario.Apellidos}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12" id="insertErrorImage">
+
+                    </div>
+                    <div class="col-sm-4 mt-1">
+                        <div class="profilepic">
+                            <img class="profilepic__image" src="{{usuario.RutaImage}}" width="200" height="200" id="imageProfile" alt="Profibild" accept="image/jpeg"/>
+                            <a href="javascript:void(0);" id="btnTest">
+                                <div class="profilepic__content">
+                                    <span class="profilepic__icon"><i class="fas fa-camera"></i></span>
+                                    <span class="profilepic__text">Cambiar foto</span>
+                                </div>
+                            </a>
+                        </div>
+                        <input id="file-input" type="file" name="name" style="display: none;" />
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="text-center">Información rápida</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-4 ">
+                                <p>Fecha de registro: <span class="text-muted"> {{usuario.Fecha_Ultimo_Acceso}}</span>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <p>Último inicio de sesión: <span class="text-muted"> {{usuario.Fecha_Registro}}</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>Último cambio de información: <span class="text-muted">{{usuario.Fecha_Modificacion}}</span></p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-4">
+                                <p>Roles: <span class="text-muted">{{usuario.roles}}</span></p>
+                            </div>
+                                  <div class="col-sm-4">
+                                <p>Estado: <span class="text-muted">{{usuario.status}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-body -->
+        </div> <!-- end card-->
+    </div>
+      <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success ">
+                <h4 class="card-title text-light ">Información personal</h4>
+            </div>
+            <div class="card-body">
+                 <form action="#" method="post" id="form" data-id="{{usuario._id}}">
+                     <div class="row">
+                         <div class="col-sm-12" id="insertError">
+
+                         </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" name="Nombres" id="Nombres" value="{{usuario.Nombres}}" placeholder="Introduzca nombres del personal" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                <input type="text" name="Apellidos" id="Apellidos" value="{{usuario.Apellidos}}" placeholder="Introduzca apellidos del personal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Cedula">Documento</label>
+                                <input type="number" name="Cedula" id="Cedula" value="{{usuario.Cedula}}" placeholder="Introduzca la cédula del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" value="{{usuario.Direccion}}" placeholder="Introduzca dirección del personal" class="form-control">
+                            </div>
+                        </div>
+                  
+                    </div>
+                       <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="email">Correo electrónico</label>
+                                <input type="email" name="email" id="email" autocomplete="username" value="{{usuario.email}}" placeholder="Introduzca correo electrónico del usuario" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="emailConfirm">Confirmar correo electrónico</label>
+                                <input type="email" name="emailConfirm" id="emailConfirm" autocomplete="username" value="{{usuario.email}}" placeholder="Confirme correo electrónico del usuario" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="password">Contraseña</label>
+                                <input type="password" name="password" id="password" autocomplete="new-password" value="{{usuario.password}}" placeholder="Introduzca contraseña del usuario" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="passwordConfirm">Confirmar contraseña</label>
+                                <input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="new-password" value="{{usuario.password}}" placeholder="Confirme contaseña del usuario" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-primary" id="btnSubmit">Actualizar datos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="card-title text-light">Historial de actividad</h4>
+            </div>
+            <div class="card-body">
+                 <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Sección</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each Historial}}                 
+                                <tr>
+                                    <td>{{Fecha}}</td>
+                                    <td>{{Seccion}}</td>
+                                    <td>{{Accion}}</td>
+                                </tr>
+                            {{/each}}                 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/admin/edicion/cuenta.js"></script>
+

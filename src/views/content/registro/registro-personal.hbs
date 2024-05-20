@@ -1,0 +1,139 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Personal administrativo</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro del personal administrativo</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/registro/nuevo-personal" method="post" id="form">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" name="Nombres" id="Nombres" placeholder="Introduzca los nombres del personal" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                <input type="text" name="Apellidos" id="Apellidos" placeholder="Introduzca los apellidos del personal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Cedula">Documento</label>
+                                <input type="number" name="Cedula" id="Cedula" placeholder="Introduzca la cédula del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" placeholder="Introduzca dirección del personal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="FechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" name="FechaNacimiento" id="FechaNacimiento">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="Rol">Nivel de usuario</label>
+                            <select name="Rol" id="Rol" name="Rol[]" class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Seleccione uno o varios niveles de usuario">
+                                <option value="Master">Master</option>
+                                <option value="Sub-master">Sub-master</option>
+                                <option value="Soporte">Soporte</option>
+                                <option value="Servicios">Servicios</option>
+                                <option value="Data">Data</option>
+                                <option value="Red">Red</option>
+                                <option value="Herramientas">Herramientas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-sm-6">
+                            <label for="Cargo">Cargo en la empresa</label>
+                            <input type="text" name="Cargo" id="Cargo" class="form-control" placeholder="Introduzca el cargo del personal">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-10">
+                                    <label for="sucursal">Sucursal</label>
+                                    <select name="sucursal" id="sucursal" class="form-control select2" data-toggle="select2">
+                                        <option value="0">--Seleccione una sucursal--</option>
+                                        {{#each sucursales}}
+                                            <option value="{{Nombre}}">{{Nombre}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-2 mt-2">
+                                    <button class="btn btn-info mt-1 w-100" id="nuevaSucursal" type="button">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Correo">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Introduzca el correo electrónico"  autocomplete="username">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="ConfirmarCorreo">Confirmar correo electrónico</label>
+                                <input type="emailConfirm" name="emailConfirm" class="form-control" id="emailConfirm" placeholder="Confirme el correo electrónico" autocomplete="username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="password">Contraseña</label>
+                                <div class="input-group input-group-merge">
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Introduzca la contraseña"  autocomplete="new-password">
+                                    <div class="input-group-text show-password" data-password="true">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="passwordConfirm">Confirme la contraseña</label>
+                                <div class="input-group input-group-merge">
+                                <input type="password" name="passwordConfirm" id="passwordConfirm" class="form-control" placeholder="Confirme la contraseña"  autocomplete="new-password">
+                                    <div class="input-group-text show-password" data-password="true">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-success" type="submit" id="btnSubmit">Registrar personal
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/admin/registro/registro-personal.js"></script>
+

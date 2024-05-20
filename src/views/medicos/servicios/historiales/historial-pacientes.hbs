@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Historial</a></li>
+                    <li class="breadcrumb-item active">Pacientes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Historial de pacientes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th class="text-center">Documento</th>
+                                <th class="text-center">Teléfono</th>
+                                <th class="text-end">Ver historial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each pacientes}}                            
+                                <tr>
+                                    <td>{{Nombres}} {{Apellidos}}</td>
+                                    <td class="text-center">{{Documento}}</td>
+                                    <td class="text-center">{{Telefono}}</td>
+                                    <td class="text-end">
+                                        <a href="/medico/historial-paciente/{{_id}}" class="btn btn-outline-info">
+                                            <i class="mdi mdi-history"></i> Ver
+                                        </a>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

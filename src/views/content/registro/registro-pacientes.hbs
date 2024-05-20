@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Pacientes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro pacientes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/registro/nuevo-personal" method="post" id="form">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres y apellidos</label>
+                                <input type="text" name="Nombres" id="Nombres" placeholder="Introduzca nombres y apellidos del paciente" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <label for="TipoDocumento">Tipo de documento</label>
+                                        <select name="TipoDocumento" id="TipoDocumento" class="form-control">
+                                            <option value="0">--Seleccione un tipo de documento--</option>
+                                            {{#each tipoDocumento}}
+                                                <option value="{{Nombre}}">{{Nombre}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2 mt-2">
+                                        <button class="btn btn-outline-info mt-2 w-100" id="btnNuevoTipoDocumento">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="Documento">Cédula / Pasaporte</label>
+                                <input type="number" name="Documento" id="Documento" placeholder="Introduzca el documento del paciente" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="FechaNacimiento">Fecha de nacimiento</label>
+                                <input type="date" name="FechaNacimiento" id="FechaNacimiento" placeholder="Fecha de nacimiento del paciente" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <label for="Telefono">Teléfono <span class="text-muted">(Whatsapp)</span></label>
+                            <input type="text" class="form-control" name="Telefono" id="Telefono" placeholder="Introduzca el teléfono del paciente">
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Medico">Medico</label>
+                                <select name="Medico" id="Medico" class="form-select select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Selecciones medicos ...">
+                                    <option value="0">--Seleccione un medico--</option>
+                                    {{#each medicos}}
+                                        <option value="{{_id}}">{{Nombres}} {{Apellidos}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" placeholder="Introduzca dirección del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="TipoFactura">Tipo de factura</label>
+                            <select name="TipoFactura" id="TipoFactura" class="form-control select2" data-toggle="select2">
+                                <option value="0">--Seleccione un tipo de factura--</option>
+                                <option value="Natural">Natural</option>
+                                <option value="Juridico">Jurídico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Correo">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Introduzca el correo electrónico"  autocomplete="username">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="ConfirmarCorreo">Confirmar correo electrónico</label>
+                                <input type="email" name="emailConfirm" class="form-control" id="emailConfirm" placeholder="Confirme el correo electrónico" autocomplete="username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label for="Nota">Notas sobre el paciente <span class="text-muted">(Opcional)</span> </label>
+                                <textarea name="Nota" id="Nota" cols="30" rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-success" type="submit" id="btnSubmit">Registrar paciente
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/admin/registro/registro-pacientes.js"></script>
+

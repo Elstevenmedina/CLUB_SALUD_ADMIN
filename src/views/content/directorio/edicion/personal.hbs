@@ -1,0 +1,161 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item"><a href="/directorio-personal">Personal</a></li>
+                    <li class="breadcrumb-item active">Ficha</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{personal.Nombres}} {{personal.Apellidos}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 ">
+                        <figure class="figure ">
+                            <img src="{{personal.RutaImage}}" alt="user-image" width="150px" height="150px" class="figure-img img-fluid rounded-circle">
+                            <figcaption class="figure-caption text-center">{{personal.Nombres}} {{personal.Apellidos}}</figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <h4 class="text-center">Información rápida</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <p>Último cambio de información: <span class="text-muted">{{personal.Fecha_Modificacion}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <p>Roles: <span class="text-muted" id="rolesActivos">{{roles}}</span>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div> <!-- end card-body -->
+        </div> <!-- end card-->
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success ">
+                <h4 class="card-title text-light ">Información personal</h4>
+            </div>
+            <div class="card-body">
+                 <form action="#" method="post" id="form" data-id="{{personal._id}}">
+                     <div class="row">
+                         <div class="col-sm-12" id="insertError">
+
+                         </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" name="Nombres" id="Nombres" value="{{personal.Nombres}}" placeholder="Introduzca nombres del personal" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                <input type="text" name="Apellidos" id="Apellidos" value="{{personal.Apellidos}}" placeholder="Introduzca apellidos del personal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Cedula">Documento</label>
+                                <input type="number" name="Cedula" id="Cedula" value="{{personal.Cedula}}" placeholder="Introduzca la cédula del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" value="{{personal.Direccion}}" placeholder="Introduzca dirección del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Correo">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{personal.Email}}" placeholder="Introduzca correo electrónico del personal"  autocomplete="username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="FechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" class="form-control" value="{{personal.FechaNacimiento}}" name="FechaNacimiento" id="FechaNacimiento">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="Cargo">Cargo en la empresa</label>
+                            <input type="text" name="Cargo" id="Cargo" class="form-control" value="{{personal.Cargo}}" placeholder="Introduzca el cargo del personal">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="sucursal">Sucursal</label>
+                            <select name="sucursal" id="sucursal" class="form-control select2" data-toggle="select2">
+                                <option value="{{personal.Sucursal}}" selected>{{personal.Sucursal}}</option>
+                                {{#each sucursales}}
+                                    <option value="{{Nombre}}">{{Nombre}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="Rol">Nivel de usuario</label>
+                            <select name="Rol" id="Rol" name="Rol[]"  class="select2 form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Seleccione uno o varios niveles de usuario">
+                                {{#each roles}}
+                                    <option value="{{this}}" selected>{{this}}</option>
+                                {{/each}}
+                               {{#each rolesList}}
+                                    <option value="{{this}}">{{this}}</option>
+                               {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-primary" id="btnSubmit">Actualizar datos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="card-tittle text-light">Historial de actividad</h4>
+            </div>
+            <div class="card-body">
+                <table id="selection-datatable" class="table table-striped dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Sección</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each Historial}}
+                            <tr>
+                                <td>{{Fecha}}</td>
+                                <td>{{Seccion}}</td>
+                                <td>{{Accion}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/admin/edicion/personal.js"></script>

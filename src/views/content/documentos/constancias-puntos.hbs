@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row bg-light" >
+            <div class="col-sm-12 text-center">
+                <img src="/images/business/logo.png" width="200px" alt="">
+            </div>
+            <div class="col-sm-12 text-center">
+                <p class="text-muted">Dirección de facturacion Lorem ipsum dolor, sit amet consectetur adipisicing </p>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-sm-12 text-center">
+                <h2>CONSTANCIA DE RETIRO</h2>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-6">
+                <p style="font-size: 20px;"> Número : {{constancia.Numero}}</p>
+            </div>
+            <div class="col-sm-6 text-end">
+                <p style="font-size: 20px;">Fecha de recibo: {{constancia.FechaRecibo}}</p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-6">
+                <p style="font-size: 20px;">ID de Transacción : {{constancia.idTransaccion}}</p>
+            </div>
+            <div class="col-sm-6 text-end">
+                <p style="font-size: 20px;">Fecha de pago: {{constancia.FechaPago}}</p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-12">
+                <p style="font-size: 20px;">Nombre: {{constancia.Medico}}</p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <hr>
+            <div class="col-sm-8 text-start">
+                <p style="font-size: 25px;">Puntos canjeados</p>
+            </div>
+            <div class="col-sm-4 text-end">
+                <p style="font-size: 25px;">{{constancia.PuntosMovidos}} pts</p>
+            </div>
+        </div>
+        <div class="fixed-bottom">
+            <p>!Club Salud, donde todos sumamos¡</p>
+        </div>
+    </div>
+<script>
+    window.print();
+</script>
+</body>
+</html>

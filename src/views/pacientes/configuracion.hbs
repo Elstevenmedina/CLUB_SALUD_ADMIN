@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item active">Configuración</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Configuración de cuenta</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-left"> Envío de correos promocionales </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="text-muted">Aqui podras elegir si deseas que la plataformade Club Salud envie correo promocionales a la dirección de correo electronico registrada
+                            en tu cuenta
+                        </p>
+                    </div>
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="switch2" {{checkedPromocionales}} data-switch="bool"/>
+                        <label for="switch2" data-on-label="Si" data-off-label="no"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-left">Suscrirbse a los mensajes de whatsapp</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="text-muted">Al suscribrse a los mensajes de whatsapp podras recibir mensajes de whatsapp de la plataforma de Club Salud, 
+                            estos mensajes serán relacionados con tu cuenta y con tu actividad en la plataforma. Por ejemplo, cuando procesemos un pago, etc.
+                        </p>
+                    </div>
+                    <div class="col-sm-12">
+                        <input type="checkbox" id="switch3" {{checkedWhatsapp}} data-switch="bool"/>
+                        <label for="switch3" data-on-label="Si" data-off-label="no"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const d = document,
+    $switch3 = d.getElementById('switch3'),
+    $switch2 = d.getElementById('switch2');
+    
+    const promociones = (data) => {
+        fetch('/paciente/configuracion-promociones',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+
+    const whatsapp = (data) => {
+        fetch('/paciente/configuracion-whatsapp',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+
+    $switch2.addEventListener('change', function() {
+        if (this.checked) {
+            let data = {
+                promociones: true
+            }
+            promociones(data)
+        } else {
+            let data = {
+                promociones: false
+            }
+            promociones(data)
+        }
+    });
+
+    $switch3.addEventListener('change', function() {
+        if (this.checked) {
+            let data = {
+                whatsapp: true
+            }
+            whatsapp(data)
+        } else {
+            let data = {
+                whatsapp: false
+            }
+            whatsapp(data)
+        }
+    });
+
+</script>

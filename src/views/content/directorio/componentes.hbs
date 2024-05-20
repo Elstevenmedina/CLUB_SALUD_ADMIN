@@ -1,0 +1,501 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item active">Componentes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Directorio de componentes</h4>
+        </div>
+    </div>
+   
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each tipos}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>Tipos de examen</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm btnEdit" data-id="{{_id}}" data-tipo="examen" data-nombre="{{Nombre}}">
+                                            <i class="mdi mdi-lead-pencil btnEdit" data-id="{{_id}}" data-tipo="examen" data-nombre="{{Nombre}}"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm btnDelete" data-id="{{_id}}" data-tipo="examen">
+                                            <i class="mdi mdi-trash-can-outline btnDelete" data-id="{{_id}}" data-tipo="examen"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                            {{#each especialidad}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>Especialidad</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm btnEdit" data-id="{{_id}}" data-tipo="especialidad" 
+                                            data-nombre="{{Nombre}}">
+                                            <i class="mdi mdi-lead-pencil btnEdit" data-id="{{_id}}" data-tipo="especialidad" 
+                                                data-nombre="{{Nombre}}"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm btnDelete" data-id="{{_id}}" data-tipo="especialidad">
+                                            <i class="mdi mdi-trash-can-outline btnDelete" data-id="{{_id}}" data-tipo="especialidad"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                            {{#each sucursales}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>Sucursales</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm btnEdit" data-id="{{_id}}" data-tipo="sucursal" 
+                                            data-nombre="{{Nombre}}">
+                                            <i class="mdi mdi-lead-pencil btnEdit" data-id="{{_id}}" data-tipo="sucursal" 
+                                                data-nombre="{{Nombre}}"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm btnDelete" data-id="{{_id}}" data-tipo="sucursal">
+                                            <i class="mdi mdi-trash-can-outline btnDelete" data-id="{{_id}}" data-tipo="sucursal"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                            {{#each tipoDocumentos}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>Tipo de documento</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm btnEdit" data-id="{{_id}}" data-tipo="tipoDocumento" 
+                                            data-nombre="{{Nombre}}">
+                                            <i class="mdi mdi-lead-pencil btnEdit" data-id="{{_id}}" data-tipo="tipoDocumento" 
+                                                data-nombre="{{Nombre}}"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm btnDelete" data-id="{{_id}}" data-tipo="tipoDocumento">
+                                            <i class="mdi mdi-trash-can-outline btnDelete" data-id="{{_id}}" data-tipo="tipoDocumento"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document;
+
+    d.addEventListener('click', e=>{
+        if(e.target.matches('.btnEdit')){
+            let linea = e.target.parentElement.parentElement;
+            let tipo = e.target.dataset.tipo;
+            if(tipo == "examen"){
+                //abrir edicion de examen con sweetalert
+                Swal.fire({
+                    title: 'Editar tipo de examen',
+                    text: 'Al editar el tipo de examen el sistema actualizará todos los examenes con dicho tipo',
+                    html: '<input id="swal-input1" class="swal2-input" value="'+e.target.dataset.nombre+'">',
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Actualizar',
+                    preConfirm: () => {
+                        const nombre = Swal.getPopup().querySelector('#swal-input1').value
+                        if (!nombre) {
+                            Swal.showValidationMessage(`El nombre es requerido`)
+                        }
+                        return { nombre: nombre }
+                    }
+                }).then((result) => {
+                          if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id,
+                            nombre: result.value.nombre
+                        }
+                         Swal.fire({
+                            title: 'Espere por favor',
+                            text: 'Actualizando tipo de examen',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        })
+                        fetch('/editar-tipo-examen',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                            //confirm with sweetalert
+                            Swal.fire({
+                                title: 'Éxito',
+                                text: 'El tipo de examen se ha actualizado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+            }else if(tipo == "especialidad"){
+                Swal.fire({
+                    title: 'Editar especialidad',
+                    text: 'Al editar la especialidad el sistema actualizará todos los examenes con dicha especialidad',
+                    html: '<input id="swal-input1" class="swal2-input" value="'+e.target.dataset.nombre+'">',
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Actualizar',
+                    preConfirm: () => {
+                        const nombre = Swal.getPopup().querySelector('#swal-input1').value
+                        if (!nombre) {
+                            Swal.showValidationMessage(`El nombre es requerido`)
+                        }
+                        return { nombre: nombre }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id,
+                            nombre: result.value.nombre
+                        }
+                        //loading with sweetalert
+                        Swal.fire({
+                            title: 'Espere por favor',
+                            text: 'Actualizando especialidad',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        })
+
+                        fetch('/editar-especialidad',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                              Swal.fire({
+                                title: 'Éxito',
+                                text: 'la especialidad se ha actualizado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+            }else if(tipo == "tipoDocumento"){
+                Swal.fire({
+                    title: 'Editar tipo de documento',
+                    html: '<input id="swal-input1" class="swal2-input" value="'+e.target.dataset.nombre+'">',
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Actualizar',
+                    preConfirm: () => {
+                        const nombre = Swal.getPopup().querySelector('#swal-input1').value
+                        if (!nombre) {
+                            Swal.showValidationMessage(`El nombre es requerido`)
+                        }
+                        return { nombre: nombre }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id,
+                            nombre: result.value.nombre
+                        }
+                        //loading with sweetalert
+                        Swal.fire({
+                            title: 'Espere por favor',
+                            text: 'Actualizando tipo de documento',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        })
+
+                        fetch('/editar-tipo-documento',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                              Swal.fire({
+                                title: 'Éxito',
+                                text: 'la especialidad se ha actualizado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+            }
+            else{
+                Swal.fire({
+                    title: 'Editar especialidad',
+                    text: 'Al editar la sucursal el sistema actualizará todos usuarios asociados a dicha sucursal',
+                    html: '<input id="swal-input1" class="swal2-input" value="'+e.target.dataset.nombre+'">',
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Actualizar',
+                    preConfirm: () => {
+                        const nombre = Swal.getPopup().querySelector('#swal-input1').value
+                        if (!nombre) {
+                            Swal.showValidationMessage(`El nombre es requerido`)
+                        }
+                        return { nombre: nombre }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id,
+                            nombre: result.value.nombre
+                        }
+                        //loading with sweetalert
+                        Swal.fire({
+                            title: 'Espere por favor',
+                            text: 'Actualizando especialidad',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        })
+
+                        fetch('/editar-sucursal',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                              Swal.fire({
+                                title: 'Éxito',
+                                text: 'La sucursal se ha actualizado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+
+            }
+        }
+        if(e.target.matches('.btnDelete')){
+            let tipo = e.target.dataset.tipo;
+
+            if(tipo == "examen"){
+                //Asking for confirmation with sweetalert
+                Swal.fire({
+                    title: '¿Estas seguro?',
+                    text: "No se recomienda proceder con esta acción sin antes validar que el tipo de examen no cuente con examenes vinculados, ya que puede generar problemas en la logica de la plataforma",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id
+                        }
+                        fetch('/eliminar-tipo-examen',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                            //confirm with sweetalert
+                            Swal.fire({
+                                title: 'Éxito',
+                                text: 'El tipo de examen se ha eliminado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+            }else if(tipo == "especialidad"){
+                Swal.fire({
+                    title: '¿Estas seguro?',
+                    text: "No se recomienda proceder con esta acción sin antes validar que el tipo de examen no cuente con examenes vinculados, ya que puede generar problemas en la logica de la plataforma",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id
+                        }
+                        fetch('/eliminar-especialidad',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                            //confirm with sweetalert
+                            Swal.fire({
+                                title: 'Éxito',
+                                text: 'El tipo de examen se ha eliminado correctamente',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            }).then((data) =>{
+                                location.reload();
+                            })
+                        })
+                    }
+                })
+
+            }else if(tipo == "tipoDocumento"){
+                Swal.fire({
+                    title: '¿Estas seguro?',
+                    text: "Esto eliminará el tipo de documento registrado",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id
+                        }
+                        fetch('/eliminar-tipo-documento',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                            //confirm with sweetalert
+                            if(data.ok){
+                                Swal.fire({
+                                    title: 'Éxito',
+                                    text: 'La sucursal se ha eliminado correctamente',
+                                    icon: 'success',
+                                    confirmButtonText: 'Aceptar'
+                                }).then((data) =>{
+                                    location.reload();
+                                })
+                            }else{
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: data.msg,
+                                    icon: 'error',
+                                    confirmButtonText: 'Aceptar'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+            else{
+                Swal.fire({
+                    title: '¿Estas seguro?',
+                    text: "Esto eliminará la sucursal registrada",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //enviar datos al servidor
+                        let data = {
+                            id: e.target.dataset.id
+                        }
+                        fetch('/eliminar-sucursal',{
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then((data) =>{
+                            return data.json();
+                        })
+                        .then((data) =>{
+                            //confirm with sweetalert
+                            if(data.ok){
+                                Swal.fire({
+                                    title: 'Éxito',
+                                    text: 'La sucursal se ha eliminado correctamente',
+                                    icon: 'success',
+                                    confirmButtonText: 'Aceptar'
+                                }).then((data) =>{
+                                    location.reload();
+                                })
+                            }else{
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: data.msg,
+                                    icon: 'error',
+                                    confirmButtonText: 'Aceptar'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+
+        }
+    })
+
+</script>

@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Examenes</a></li>
+                    <li class="breadcrumb-item active">Solicitudes rechazadas</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Solicitudes rechazadas</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Paciente</th>
+                                <th>Servicio</th>
+                                <th>Descripción</th>
+                                <th>Motivo rechazo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each otrosServicios}}                            
+                                <tr>
+                                    <td>{{Numero}}</td>
+                                    <td>{{Fecha}}</td>
+                                    <td>{{Paciente}}</td>
+                                    <td>{{Servicio}}</td>
+                                    <td>{{Descripcion}}</td>
+                                    <td>{{MotivoRechazo}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

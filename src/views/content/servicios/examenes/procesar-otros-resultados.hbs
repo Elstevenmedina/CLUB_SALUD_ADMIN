@@ -1,0 +1,110 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-examenes">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Procesar</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Procesar solicitud #{{examen.Numero}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="text-light">Carga de resultados</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12" id="insertError">
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="Resultado">Resultado</label>
+                            <input type="file" name="Resultado" data-numero="{{examen.Numero}}" data-examen="{{examen._id}}" id="Resultado" class="form-control" type="file" accept="application/pdf">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success" id="btnCargar">Cargar resultados</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-light">Información del paciente</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="mb-2">
+                            <label for="Paciente">Paciente</label>
+                            <input type="text" id="Paciente" readonly class="form-control" value="{{examen.Paciente}}">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-2">
+                            <label for="FechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" name="FechaNacimiento" readonly id="FechaNacimiento" value="{{examen.FechaNacimientoPaciente}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-2">
+                            <label for="DocumentoPaciente">Documento del paciente</label>
+                            <input type="text" id="DocumentoPaciente" readonly class="form-control" value="{{examen.DocumentoPaciente}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="mb-2">
+                            <label for="Direccion">Dirección</label>
+                            <input type="text" name="Direccion" id="Direccion" readonly value="{{examen.DireccionPaciente}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-2">
+                            <label for="Telefono">Teléfono</label>
+                            <input type="text" name="Telefono" id="Telefono" readonly value="{{examen.TelefonoPaciente}}" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-light">Exámenes solicitados</h4>
+            </div>
+            <div class="card-body">
+                  <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Examen</th>
+                        </thead>
+                        <tbody>
+                            {{#each examen.ListaExamenes}}
+                                <tr>
+                                    <td>{{tipo}}</td>
+                                    <td>{{nombre}} {{subtipo}} {{agregadoPosterior}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/admin/procesar-otros-resultados.js"></script>

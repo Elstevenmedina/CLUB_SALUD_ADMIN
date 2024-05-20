@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+         <div class="col-xl-12 col-lg-12 order-lg-2 order-xl-1 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="header-title">SOLICITUDES ATENDIDAS RECIENTEMENTE</h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                                {{#each examenes}}
+                                    <tr>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal">{{Numero}}</h5>
+                                            <span class="text-muted font-13">Número</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal">{{FechaAtencion}}</h5>
+                                            <span class="text-muted font-13">Fecha de atención</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal"><a href="/ver-resultados/{{_id}}" class="btn btn-outline-info" >Ver</a></h5>
+                                            <span class="text-muted font-13">Resultados</span>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div>
+    </div>
+</div>

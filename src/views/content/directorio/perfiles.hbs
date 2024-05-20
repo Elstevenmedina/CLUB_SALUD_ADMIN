@@ -1,0 +1,158 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item active">Perfiles</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Directorio de perfiles</h4>
+        </div>
+    </div>
+   
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each perfiles}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>{{Precio}}</td>
+                                    <td>
+                                        <button class="btn btn-info btnEditar btn-sm" data-nombre="{{Nombre}}" data-precio="{{Precio}}" data-id="{{_id}}">Editar</button>
+                                        <button class="btn btn-danger btnEliminar btn-sm" data-id="{{_id}}">Eliminar</button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document;
+
+    d.addEventListener('click', e=>{
+        if(e.target.matches('.btnEditar')){
+                //abrir edicion de examen con sweetalert
+            Swal.fire({
+                title: 'Editar especialidad',
+                html: `
+                    <input id="swal-input1" class="swal2-input" value="${e.target.dataset.nombre}" placeholder="Nombre del perfil"></br>
+                    <input id="swal-input2" class="swal2-input" value="${e.target.dataset.precio}" placeholder="Precio del perfil"></br>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: "Cancelar",
+
+                focusConfirm: false,
+                preConfirm: () => {
+                    const nombre = Swal.getPopup().querySelector('#swal-input1').value
+                    const precio = Swal.getPopup().querySelector('#swal-input2').value
+                    if (!nombre) {
+                        Swal.showValidationMessage(`El nombre es requerido`)
+                    }
+                    if (!precio) {
+                        Swal.showValidationMessage(`El precio es requerido`)
+                    }
+                    if (+precio == NaN || +precio <=0) {
+                        Swal.showValidationMessage(`El precio a ingresar debe ser un número mayor a cero`)
+                    }
+                    return { nombre, precio }
+                    }
+            }).then((result) => {
+                        if (result.isConfirmed) {
+                    //enviar datos al servidor
+                    let data = {
+                        id: e.target.dataset.id,
+                        nombre: result.value.nombre,
+                        precio: result.value.precio
+                    }
+                        Swal.fire({
+                        title: 'Espere por favor',
+                        text: 'Actualizando prefil',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                        showConfirmButton: false
+                    })
+                    fetch('/editar-perfil',{
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then((data) =>{
+                        return data.json();
+                    })
+                    .then((data) =>{
+                        //confirm with sweetalert
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'El tipo perfil se ha actualizado correctamente',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then((data) =>{
+                            location.reload();
+                        })
+                    })
+                }
+            })
+        }
+        if(e.target.matches('.btnEliminar')){
+            Swal.fire({
+                title: '¿Estas seguro?',
+                text: "Esta acción no se podrá revertir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //enviar datos al servidor
+                    let data = {
+                        id: e.target.dataset.id
+                    }
+                    fetch('/eliminar-perfil',{
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then((data) =>{
+                        return data.json();
+                    })
+                    .then((data) =>{
+                        //confirm with sweetalert
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: 'El perfil se ha eliminado correctamente.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then((data) =>{
+                            location.reload();
+                        })
+                    })
+                }
+            })
+        }
+    })
+
+
+</script>

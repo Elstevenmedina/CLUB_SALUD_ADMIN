@@ -1,0 +1,70 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Edición</a></li>
+                    <li class="breadcrumb-item active">Nosotros</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Nosotros</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="Nosotros">Nosotros</label>
+                        <textarea name="Nosotros" id="Nosotros" cols="30" rows="10" class="form-control">{{Nosotros.Contenido}}</textarea>
+                    </div>
+                    <div class="col-sm-12 my-2 text-end">
+                        <button class="btn btn-success" id="btnGuardarNosotros">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    $btnGuardarNosotros = d.getElementById('btnGuardarNosotros'),
+    $Nosotros = d.getElementById('Nosotros');
+
+    $btnGuardarNosotros.onclick = () => {
+        if($Nosotros.value == "" || !$Nosotros.value || $Nosotros.value == 0){
+            $Nosotros.classList.add('is-invalid')
+        }else{
+            let dataEnvio = {
+                Nosotros: $Nosotros.value
+            } 
+            swal.fire({
+                title: 'Guardando información',
+                html: `
+                <div class="my-3 spinner-border avatar-lg text-success" role="status"></div>
+                `,
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: false
+            })
+
+
+            fetch('/guardar-informacion-nosotros',{
+                method: 'POST',
+                body: JSON.stringify(dataEnvio),
+                headers: {
+                    'content-type':'application/json'
+                }
+            }).then((data) =>{
+                return data.json()
+            }).then((data) =>{
+                swal.close()
+            })
+
+        }
+    }
+    
+
+</script>

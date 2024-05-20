@@ -1,0 +1,40 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Directorio</a></li>
+                    <li class="breadcrumb-item active">Pacientes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Directorio de pacientes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombre y apellido</th>
+                                <th>Documento</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each pacientes}}                            
+                                <tr>
+                                    <td><a href="/medico/edicion/editar-paciente/{{_id}}" class="text-info">{{Nombres}} {{Apellidos}}</a></td>
+                                    <td>{{Documento}}</td>
+                                    <td>{{Email}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

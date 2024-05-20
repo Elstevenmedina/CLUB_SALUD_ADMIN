@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen #{{examen.Numero}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row bg-light" >
+            <div class="col-sm-12 text-center">
+                <img src="/images/business/logo.png" width="200px" alt="">
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-12 text-center">
+                <h2>Examen #{{examen.Numero}}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-right">
+                    <strong>Fecha:</strong> {{examen.Fecha}}
+                </p>
+            </div>
+            <div class="col-sm-6 ">
+                <p><strong>Paciente:</strong>  {{examen.Paciente}}</p>
+            </div>
+            <div class="col-sm-6 text-right">
+                <p><strong>Médico:</strong> {{examen.Medico}}</p>
+            </div>
+            <div class="col-sm-12 ">
+                <p><strong>Documento del paciente:</strong>  {{examen.DocumentoPaciente}}</p>
+                <p><strong>Dirección del paciente:</strong>  {{examen.DireccionPaciente}}</p>
+            </div>
+            <div class="col-sm-12 text-center">
+                <h3>Solicitudes</h3>
+            </div>
+            <div class="col-sm-12 mt-4">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each examen.ListaExamenes}}
+                                <tr>
+                                    <td>{{tipo}}</td>
+                                    <td>{{nombre}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+            
+        <div class="fixed-bottom">
+            <p>¡Club Salud, Donde todos sumamos! </p>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    window.print();
+</script>
+</body>
+</html>

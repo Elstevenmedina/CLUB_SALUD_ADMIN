@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Orden</a></li>
+                    <li class="breadcrumb-item active">Orden tipo de examenes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Orden tipo de análisis</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tipo de análisis</th>
+                            <th scope="col">Orden registrado</th>
+                            <th scope="col">Nuevo orden</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {{#each tipos}}
+                            <tr>
+                                <td>{{Nombre}}</td>
+                                <td> 
+                                    {{Orden}}
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control w-50 tipoExamen"  data-_id="{{_id}}" value="{{Orden}}">
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 text-end my-2">
+        <button class="btn btn-success" id="btnActualizar">Actualizar orden</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document,
+    $tbody = d.getElementById('tbody'),
+    $btnActualizar = d.getElementById('btnActualizar');
+
+    d.addEventListener('click', e=>{
+        if(e.target == $btnActualizar){
+
+            let errors = 0
+
+            for(i=0; i< $tbody.children.length; i++){
+                if($tbody.children[i].children[2].firstElementChild.value == "" || $tbody.children[i].children[2].firstElementChild.value <= 0){
+                    $tbody.children[i].children[2].firstElementChild.classList.add('is-invalid');
+                    errors ++;
+                }else{
+                    $tbody.children[i].children[2].firstElementChild.classList.remove('is-invalid');
+                }
+
+                //validate if some value is repeat 
+                for(j=0; j< $tbody.children.length; j++){
+                    if($tbody.children[i].children[2].firstElementChild.value == $tbody.children[j].children[2].firstElementChild.value && i != j){
+                        $tbody.children[i].children[2].firstElementChild.classList.add('is-invalid');
+                        $tbody.children[j].children[2].firstElementChild.classList.add('is-invalid');
+                        errors ++;
+                    }else{
+                        $tbody.children[i].children[2].firstElementChild.classList.remove('is-invalid');
+                        $tbody.children[j].children[2].firstElementChild.classList.remove('is-invalid');
+                    }
+                }
+
+            }
+
+            if(errors > 0){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algunos campos no son validos o estan repetidos',
+                })
+
+            }else{
+
+                let data = []
+
+                for(i=0; i< $tbody.children.length; i++){
+                    data.push({
+                        id: $tbody.children[i].children[2].firstElementChild.dataset._id,
+                        orden: $tbody.children[i].children[2].firstElementChild.value
+                    })
+                }
+
+                //loading with swal
+                Swal.fire({
+                    title: 'Actualizando orden',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+
+                fetch('/actualizar-orden-tipo-examen', {
+                    method: 'POST',
+                    body: JSON.stringify({tipoExamenes: data}),
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then((data) =>{
+                    return data.json()
+                })
+                .then((data) =>{
+                    if(data.ok){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Orden actualizado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then((data) =>{
+                            location.reload()
+                        })
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo salio mal',
+                        })
+
+                    }
+                })
+
+            }
+        }
+    })
+
+
+</script>

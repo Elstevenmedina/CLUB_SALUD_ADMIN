@@ -1,0 +1,164 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-examenes">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Procesar</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Procesar solicitud #{{examen.Numero}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="text-light">Carga de resultados</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12" id="insertError">
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label for="Resultado">Resultado</label>
+                            <input type="file" name="Resultado" data-numero="{{examen.Numero}}" data-examen="{{examen._id}}" id="Resultado" class="form-control" type="file" accept="application/pdf">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success" id="btnCargar">Cargar resultados</button>
+                    </div>
+                    <div class="col-sm-12 text-end mt-5">
+                        <button class="btn btn-outline-primary" id="btnFinalizar">Finalizar carga</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-light">Información del paciente</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12 my-2" id="insertError2"></div>
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label for="Nombres">Nombres</label>
+                            <input type="text" name="Nombres" value="{{examen.Paciente}}" id="Nombres" placeholder="Introduzca nombres del personal" class="form-control">
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label for="Documento">Documento del paciente</label>
+                            <input type="text" name="Documento" id="Documento" value="{{examen.DocumentoPaciente}}" placeholder="Introduzca el documento del apciente" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="mb-3">
+                            <label for="FechaNacimiento">Fecha de nacimiento</label>
+                            <input type="date" name="FechaNacimiento" value="{{paciente.FechaNacimiento}}" id="FechaNacimiento" placeholder="Fecha de nacimiento del paciente" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="Telefono">Teléfono <span class="text-muted">(Whatsapp)</span></label>
+                        <input type="text" class="form-control" value="{{paciente.Telefono}}" name="Telefono" id="Telefono" placeholder="Introduzca el teléfono del paciente">
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mb-3">
+                            <label for="Medico">Medico</label>
+                            <select name="Medico" id="Medico" class="form-select select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Seleccione medicos ...">
+                                <option value="{{examen._idMedico}}" selected>{{examen.Medico}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label for="Direccion">Dirección</label>
+                            <input type="text" name="Direccion" value="{{paciente.Direccion}}" id="Direccion" placeholder="Introduzca dirección del personal" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="TipoFactura">Tipo de factura</label>
+                        <select name="TipoFactura" id="TipoFactura" class="form-control select2" data-toggle="select2">
+                            <option value="{{paciente.TipoFactura}}" selected>{{paciente.TipoFactura}}</option>
+                            <option value="Natural">Natural</option>
+                            <option value="Juridico">Jurídico</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label for="Correo">Correo electrónico</label>
+                            <input type="email" name="email" value="{{paciente.Email}}" id="email" class="form-control" placeholder="Introduzca correo electronico del personal"  autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mb-3">
+                            <label for="ConfirmarCorreo">Confirmar correo electrónico</label>
+                            <input type="email" value="{{paciente.Email}}" name="emailConfirm" class="form-control" id="emailConfirm" placeholder="Confirme correo electronico del personal" autocomplete="username">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="mb-3">
+                            <label for="Nota">Notas sobre el paciente <span class="text-muted">(Opcional)</span> </label>
+                            <textarea name="Nota" id="Nota" cols="30" rows="3" class="form-control">{{paciente.Nota}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success" type="submit" id="btnSubmit" {{buttonActive}} >{{textoButton}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary">
+                <h4 class="text-light">Exámenes solicitados</h4>
+            </div>
+            <div class="card-body">
+                  <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Examen</th>
+                                <th>Cantidad</th>
+                        </thead>
+                        <tbody>
+                            {{#each examen.ListaExamenes}}
+                                <tr>
+                                    <td>{{tipo}}</td>
+                                    <td>{{nombre}} {{subtipo}} {{agregadoPosterior}}</td>
+                                    <td>{{cantidad}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 text-end my-2">
+        <button class="btn btn-outline-danger" id="btnRechazar">Rechazar</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/admin/procesar-examenes.js"></script>
+<script src="/js/admin/registro/registro-pacientes-examen.js"></script>
+

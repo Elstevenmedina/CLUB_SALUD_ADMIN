@@ -1,0 +1,133 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Edición</a></li>
+                    <li class="breadcrumb-item active">Crear recomendaciones</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Crear recomendaciones</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        {{>success}}
+    </div>
+    <div class="col-12">
+        <form action="/nueva-recomendacion" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Formulario de registro de recomendaciones</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="tipoRecomendacion">Tipo recomendación</label>
+                                        <input type="text" name="tipoRecomendacion" id="tipoRecomendacion" class="form-control" required placeholder="Introduzca tipo recomendación">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="Titulo">Titulo</label>
+                                        <input type="text" name="Titulo" id="Titulo" class="form-control" required placeholder="Introduzca el titulo">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label for="Descripcion">Descripción</label>
+                                        <textarea name="Descripcion" id="Descripcion" required class="form-control" placeholder="Introduzca descripción" cols="30" rows="3"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label for="Imagen">Imagen</label>
+                                        <input type="file" name="Imagen" id="Imagen" class="form-control" required>
+                                        <span class="text-muted">Resolución recomendada 1402 x 1080</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 text-end">
+                                    <button class="btn btn-success" type="submit">Crear recomendación</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-12 my-2">
+        <div class="row">
+            {{#each recomendaciones}}
+                <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+                    <div class="card">
+                        <div class="blog-post rounded shadow">
+                            <img src="{{Imagen}}" class="img-fluid rounded-top" alt="">
+                            <div class="content pt-4 pb-4 p-3">
+                                <h6 class="text-custom fw-normal">{{TipoRecomendacion}}</h6> 
+                                <h5 class="title text-dark">{{Titulo}}</h5> 
+                                <p class="text-muted pb-3 border-bottom">{{Descripcion}}</p>
+                                <ul class="list-unstyled post-meta mb-2">
+                                    <li class="text-muted"><i class="mdi mdi-calendar-edit me-1"></i>{{Fecha}}</li>
+                                </ul>
+                                <ul class="list-unstyled post-meta mb-0">
+                                    <li >
+                                        <button class="btn btn-danger w-100" data-_id="{{_id}}">Eliminar recomendación</button>
+                                    </li>
+                                </ul>
+                            </div><!--end content-->
+                        </div><!--end blog post-->
+                    </div>
+                </div><!--end col-->
+            {{/each}}
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document;
+
+    d.addEventListener('click', e=>{
+        if(e.target.textContent == "Eliminar recomendación"){
+            Swal.fire({
+                title: 'Eliminar recomendación',
+                icon: 'info',
+                text: '¿Estas seguro/a que quieres eliminar la recomendación?',
+                type: 'info',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                cancelButtonColor: '#8391a2',
+                confirmButtonColor: '#d33',
+                showCancelButton: true,
+                allowOutsideClick: false,
+
+            }).then((data) => {
+                if (data.isConfirmed){
+                    let _id = e.target.dataset._id
+                    fetch(`/eliminar-recomendacion/${_id}`,{
+                        method:'POST',
+                        headers: {
+                            'content-type':'application/json'
+                        }
+                    }).then((data) =>{
+                        return data.json()
+                    }).then((data) =>{
+                        location.reload()
+                    })
+
+                }
+            })
+        }
+    })
+
+</script>

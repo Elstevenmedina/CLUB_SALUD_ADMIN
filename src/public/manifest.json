@@ -1,0 +1,33 @@
+{
+    "theme_color": "#2196f3",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Club Salud",
+    "orientation":"portrait",
+    "short_name": "Club Salud",
+    "description": "Club Salud es una plataforma que conecta medicos, pacientes y laboratorios para mejorar la atencion medica con herramientas innovadoras.",
+    "icons": [
+        {
+            "src": "/images/pwa/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/pwa/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/pwa/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/pwa/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

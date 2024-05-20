@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-historiales">Historial</a></li>
+                    <li class="breadcrumb-item active">{{medico.Nombres}} {{medico.Apellidos}}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Historial {{medico.Nombres}} {{medico.Apellidos}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="text-light">Exámenes</h4>
+            </div>
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Numeros</th>
+                                <th class="text-center">Fecha</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center">Paciente</th>
+                                <th class="text-center">Puntos totales</th>
+                                <th class="text-center">%</th>
+                                <th class="text-center">Puntos medico</th>
+                                <th class="text-center">Puntos netos</th>
+                                <th class="text-center">Resultados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each examenes}}                            
+                                <tr>
+                                    <td><a href="#" class="text-info examen">{{Numero}}</a></td>
+                                    <td class="text-center">{{Fecha}}</td>
+                                    <td class="text-center">{{Estado}}</td>
+                                    <td class="text-center">{{Paciente}}</td>
+                                    <td class="text-center">{{PuntosTotales}}</td>
+                                    <td class="text-center">{{Comision}}</td>
+                                    <td class="text-center">{{PuntosMedico}}</td>
+                                    <td class="text-center">{{PuntosNetos}}</td>
+                                    {{#if disabled}}
+                                        <td>
+                                            <a class="btn btn-outline-danger" href="javascript:void(0)">
+                                                Sin resultados
+                                            </a>
+                                        </td>
+                                        {{else}}
+                                        <td>
+                                            <a  class="btn btn-outline-info resultados" data-numero="{{Numero}}" href="javascript:void(0)">
+                                                <i class="mdi mdi-eye"></i> Ver
+                                            </a>
+                                        </td>
+                                    {{/if}}
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mt-2">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="text-light">Puntos</h4>
+            </div>
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Número</th>
+                                <th class="text-center">Tipo movimiento</th>
+                                <th class="text-center">Puntos anteriores</th>
+                                <th class="text-center">Puntos ajustados</th>
+                                <th class="text-center">Puntos actuales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each historialPuntos}}                            
+                                <tr>
+                                    <td class="text-center">{{Numero}}</td>
+                                    <td class="text-center">{{Tipo}}</td>
+                                    <td class="text-center">{{PuntosAnteriores}}</td>
+                                    <td class="text-center">{{PuntosMovidos}}</td>
+                                    <td class="text-center">{{PuntosActiales}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/info-resultados.js"></script>
+<script src="/js/admin/servicios/info-examenes.js"></script>

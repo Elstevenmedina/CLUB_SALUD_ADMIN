@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de puntos</title>
+    <link rel="Shortcut Icon" type="image/ico" href="/images/icons/icon.png">
+
+    <!-- App css -->
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app-modern.css" rel="stylesheet" type="text/css" id="app-style" />
+    <link href="/assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/svg-with-js.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/fullcalendar.min.css">
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row my-3">
+            <div class="col-12 text-center">
+                <h2>REPORTE DE PUNTOS</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 w-50">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="header-title">Puntos por meses</h4>
+                </div>
+
+                <div dir="ltr">
+                    <div id="high-performing-product" class="apex-charts" data-colors="#536de6,#e3eaef"></div>
+                </div>
+            </div> <!-- end col-->
+        </div>
+        <div class="card">
+            <div class="row mt-2">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Puntos totales</th>
+                            <th scope="col">Puntos netos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each dataMeses}}
+                                <tr>
+                                    <th>{{Anio}}</th>
+                                    <th>{{Mes}}</th>
+                                    <th>{{PuntosTotales}} pts</th>
+                                    <th>{{PuntosNetos}} pts</th>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="text-end text-danger">Total</td>
+                                <td>{{PuntosTotales}} pts</td>
+                                <td>{{PuntosNetos}} pts</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        
+        </div>
+
+        <!-- bundle -->
+        <!-- <script src="/socket.io/socket.io.min.js"></script>
+        <script src="/js/main.js"></script>-->
+        <script src="/assets/js/vendor.min.js"></script>
+        <script src="/assets/js/app.min.js"></script>
+        <script src="/assets/js/vendor/jquery.dataTables.min.js"></script>
+        <script src="/assets/js/vendor/responsive.bootstrap5.min.js"></script>
+        <script src="assets/js/vendor/chart.min.js"></script>
+        <!-- third party js ends -->
+        <!-- demo app -->
+        <script src="assets/js/pages/dashboard-projects.js"></script>
+        <!-- Datatable Init js -->
+        <script src="/js/admin/tema.js"></script>
+        <!-- SOCKET IO  -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.3/qs.min.js" 
+        integrity="sha512-juaCj8zi594KHQqb92foyp87mCSriYjw3BcTHaXsAn4pEB1YWh+z+XQScMxIxzsjfM4BeVFV3Ij113lIjWiC2w==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/js/admin/socket.js"></script>
+        
+        <!-- third party js -->
+        <script src="assets/js/vendor/apexcharts.min.js"></script>
+        <script src="assets/js/vendor/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="assets/js/vendor/jquery-jvectormap-world-mill-en.js"></script>
+        <!-- third party js ends -->
+
+        <!-- demo app -->
+        <script src="assets/js/pages/demo.dashboard.js"></script> <!--GRAFICAS INDICADORES-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script>
+            setTimeout(function(){
+                window.print();
+            }, 3000);
+        </script>
+</body>
+</html>

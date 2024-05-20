@@ -1,0 +1,260 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item"><a href="/directorio-medico">Medicos</a></li>
+                    <li class="breadcrumb-item active">Ficha</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{medico.Nombres}} {{medico.Apellidos}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="ribbon ribbon float-start">
+                    <figure class="figure">
+                        <img src="{{medico.rutaMedalla}}" alt="user-image" width="60px" class="figure-img img-fluid my-0 rounded-circle">
+                        <figcaption class="figure-caption text-center text-dark my-0">{{medico.Medalla}}</figcaption>
+                    </figure>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 ">
+                        <figure class="figure ">
+                            <img src="{{medico.RutaImage}}" alt="user-image" width="150px" class="figure-img img-fluid  rounded-circle">
+                            <figcaption class="figure-caption text-center">{{medico.Nombres}} {{medico.Apellidos}}</figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <h4 class="text-center">Información rápida</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-4 ">
+                                <p>Exámenes solicitados: <span class="text-muted">{{examenesSolicitados}}</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>Último cambio de información: <span class="text-muted">{{medico.Fecha_Modificacion}}</span></p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>Pacientes registrados: <span class="text-muted">{{pacientesRegistrados}}</span></p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-4">
+                                <p>Puntos obtenidos: <span class="text-muted">{{medico.PuntosObtenidos}}</span></p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>Puntos canjeados: <span class="text-muted">{{medico.PuntosCanjeados}}</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <p>Puntos canjeables: <span class="text-muted">{{medico.PuntosCanjeables}}</span></p>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <p>¿Verificado por correo electrónico? <span class="text-muted">{{medico.Verificado}}</span></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p>Status de cuenta: <span class="text-muted">{{medico.Estado}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-body -->
+        </div> <!-- end card-->
+    </div>
+      <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success ">
+                <h4 class="card-title text-light ">Información personal</h4>
+            </div>
+            <div class="card-body">
+                 <form action="#" method="post" id="form" data-id="{{medico._id}}">
+                     <div class="row">
+                         <div class="col-sm-12" id="insertError">
+
+                         </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" name="Nombres" id="Nombres" value="{{medico.Nombres}}" placeholder="Introduzca nombres del personal" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                <input type="text" name="Apellidos" id="Apellidos" value="{{medico.Apellidos}}" placeholder="Introduzca apellidos del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Medalla">Medalla</label>
+                                <select name="Medalla" id="Medalla" class="form-control">
+                                    <option value="{{medico.Medalla}}" selected>{{medico.Medalla}}</option>
+                                    {{#each medallas}}
+                                        <option value="{{Nombre}}">{{Nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="Cedula">Documento</label>
+                                <input type="number" name="Cedula" id="Cedula" value="{{medico.Cedula}}" placeholder="Introduzca la cédula del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="FechaNacimiento">Fecha de nacimiento</label>
+                                <input type="date" name="FechaNacimiento" value="{{medico.FechaNacimiento}}" id="FechaNacimiento" placeholder="Introduzca la fecha de nacimiento del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="Telefono">Teléfono</label>
+                                <input type="number" name="Telefono" id="Telefono" value="{{medico.Telefono}}" placeholder="Introduzca el teléfono del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="email">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{medico.Email}}" placeholder="Introduzca el correo electrónico del médico">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección del consultorio</label>
+                                <input type="text" name="Direccion" value="{{medico.Direccion}}" id="Direccion" placeholder="Introduzca dirección del consultorio médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Especialidad">Especialidad médica</label>
+                                <input type="text" class="form-control" name="Especialidad" value="{{medico.Especialidad}}" id="Especialidad" placeholder="Introduzca especialidad médica">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="numeroCIV">Colegio de médicos</label>
+                                <input type="text" name="numeroCIV" value="{{medico.NumeroCIV}}" id="numeroCIV" placeholder="Introduzca número del Colegio de médicos" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="grupoSanguineo">Grupo sanguíneo</label>
+                                <input type="text" name="grupoSanguineo" value="{{medico.GrupoSanguineo}}" id="grupoSanguineo" placeholder="Introduzca el grupo sanguíneo del médico" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="Cuenta">Cuenta a enviar puntos</label>
+                            <textarea name="Cuenta" id="Cuenta" cols="30" rows="2" class="form-control" placeholder="Introduzca cuenta a enviar los puntos generados">{{medico.Cuenta}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-primary" id="btnSubmit">Actualizar datos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="card-title text-light">Pacientes registrados</h4>
+            </div>
+            <div class="card-body">
+                 <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombres</th>
+                                <th>Documento</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each pacientes}}                            
+                                <tr>
+                                    <td><a href="/edicion/editar-paciente/{{_id}}" class="text-info" >{{Nombres}} {{Apellidos}}</a></td>
+                                    <td>{{Documento}}</td>
+                                    <td>{{Email}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="card-tittle text-light">Historial de puntos</h4>
+            </div>
+            <div class="card-body">
+                 <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Fecha</th>
+                                <th class="text-center">Tipo</th>
+                                <th class="text-center">Puntos anteriores</th>
+                                <th class="text-center">Puntos ajustados</th>
+                                <th class="text-center">Puntos ganados</th>
+                                <th class="text-center">Comentario</th>
+                                <th class="text-center">Usuario acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each historial}}                            
+                                <tr class="text-{{Color}}">
+                                    <td class="text-center">{{Fecha}}</td>
+                                    <td class="text-center">{{TipoMovimiento}}</td>
+                                    <td class="text-center">{{PuntosAnteriores}}</td>
+                                    <td class="text-center">{{PuntosMovidos}}</td>
+                                    <td class="text-center">{{PuntosActuales}}</td>
+                                    <td class="text-center">{{Comentario}}</td>
+                                    <td class="text-center">{{Usuario}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    {{#if medico.Activo}}
+        <div class="col-sm-12 mt-3 text-end">
+            <button class="btn btn-danger" id="btnDesactivar">Desactivar médico</button>
+        </div>
+        {{else}}
+        <div class="col-sm-12 mt-3 text-end">
+            <button class="btn btn-success" id="btnActivar">Activar médico</button>
+        </div>
+    {{/if}}
+
+    <div class="col-sm-12 mt-3 text-end">
+        <button class="btn btn-outline-danger" id="btnEliminar">Eliminar médico</button>
+    </div>
+  
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/admin/edicion/medicos.js"></script>

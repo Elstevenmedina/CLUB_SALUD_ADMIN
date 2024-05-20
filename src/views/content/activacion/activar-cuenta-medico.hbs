@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Activación de cuenta | Club Salud</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/images/icons/icon.png">
+
+
+        <!-- App css -->
+        <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/css/app-modern.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+    </head>
+
+    <body class="loading authentication-bg" data-layout-config='{"darkMode":false}'>
+
+        <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-4 col-lg-5">
+                        <div class="card">
+                            <!-- Logo -->
+                            <div class="card-header  text-center bg-light" style="background: linear-gradient(to left, rgba(41,195,79,0.3),white,rgba(38,67,237,0.3) );">
+                                <a href="index.html">
+                                    <span><img src="/images/business/logo.png" alt="" height="70"></span>
+                                </a>
+                            </div>
+                            
+                            <div class="card-body p-4" id="cardBody">
+                                
+                                <div class="text-center w-75 m-auto">
+                                    <h4 class="text-dark-50 text-center mt-0 fw-bold">Activación de cuenta</h4>
+                                    <p class="text-muted mb-4">Por favor, introduce tu contraseña</p>
+                                </div>
+
+                                <form action="#" id="form">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="emailaddress" class="form-label">Contraseña</label>
+                                                <input class="form-control" type="password" id="password" required="" placeholder="Introduzca contraseña" autocomplete="new-password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="mb-3">
+                                                <label for="emailaddress" class="form-label">Confirmar contraseña</label>
+                                                <input class="form-control" type="password" id="passwordConfirm" required="" placeholder="Confirme contraseña" autocomplete="new-password">
+                                                <span class="text-muted">Las contraseñas deben coincideir</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-0 text-center">
+                                        <button class="btn btn-success" type="submit" disabled id="btnActivar">Activar cuenta</button>
+                                    </div>
+                                </form>
+                            </div> <!-- end card-body-->
+                        </div>
+                        <!-- end card -->
+
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <p class="text-muted">Volver a <a href="/" class="text-muted ms-1"><b>Iniciar sesión</b></a></p>
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </div>
+        <!-- end page -->
+
+        <footer class="footer footer-alt">
+        <script src=""></script>
+         <script>document.write(new Date().getFullYear())</script> © Club Salud - clubsaludve.com
+        </footer>
+
+        <!-- bundle -->
+        <!--<script src="/js/admin/activacion/activacion-cuentas.js"></script>-->
+        <script src="/assets/js/vendor.min.js"></script>
+        <script src="/assets/js/app.min.js"></script>
+        
+    </body>
+</html>
+<script>
+    const d = document,
+$password = d.getElementById('password'),
+$btnActivar = d.getElementById('btnActivar'),
+$passwordConfirm = d.getElementById('passwordConfirm'),
+$cardBody = d.getElementById('cardBody'),
+$form = d.getElementById('form');
+
+let enviarDatos = (data) => {
+    fetch('/activar-cuenta/{{id}}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        if (data.status == 'success') {
+            $cardBody.innerHTML = `
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <p>¡Usuario registrado exitosamente!</p> <br>
+                        <span class="text-muted">Será redireccionado al inicio de sesión para que acceda a Club Salud</span>
+                    </div>
+                    <div class="col-sm-12 text-center mt-2">
+                        <img src="/images/business/check.png" class="img-fluid" width="150px">
+                    </div>
+                </div>
+            `
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 6000);
+        } else {
+            alert(data.message);
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+$form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let data = {
+        password: $password.value
+    }
+    $btnActivar.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Validando datos...
+    ` 
+    $btnActivar.setAttribute('disabled','')
+    enviarDatos(data)
+
+})
+
+$password.addEventListener('keyup', () => {
+    if ($password.value === $passwordConfirm.value) {
+        $passwordConfirm.classList.remove('is-invalid');
+        $password.classList.remove('is-invalid');
+        $passwordConfirm.classList.remove('is-valid');
+        $password.classList.remove('is-valid');
+        $passwordConfirm.setCustomValidity('');
+        $btnActivar.removeAttribute('disabled');
+    } else {
+        $passwordConfirm.classList.add('is-invalid');
+        $password.classList.add('is-invalid');
+    }
+});
+
+$passwordConfirm.addEventListener('keyup', () => {
+    if ($password.value === $passwordConfirm.value) {
+        $passwordConfirm.classList.remove('is-invalid');
+        $password.classList.remove('is-invalid');
+        $passwordConfirm.classList.remove('is-valid');
+        $password.classList.remove('is-valid');
+        $passwordConfirm.setCustomValidity('');
+        $btnActivar.removeAttribute('disabled');
+    } else {
+        $passwordConfirm.classList.add('is-invalid');
+        $password.classList.add('is-invalid');
+    }
+});
+
+</script>

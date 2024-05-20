@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Perfiles</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro de perfiles</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="Nombre">Nombre de perfil</label>
+                        <input type="text" name="Nombre" id="Nombre" required class="form-control" placeholder="Nombre del perfil">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Precio">Precio</label>
+                        <input type="number" name="Precio" id="Precio" required min="0.1" step="any" class="form-control" placeholder="Precio del perfil">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success"  id="btnSubmit">Registrar perfil</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const d = document;
+    const btnSubmit = d.getElementById('btnSubmit');
+    const insertError = d.getElementById('insertError');
+    const Nombre = d.getElementById('Nombre');
+    const Precio = d.getElementById('Precio');
+
+    d.addEventListener('DOMContentLoaded', () => {
+        Nombre.focus();
+    });
+
+    d.addEventListener('click',e=>{
+        if(e.target == btnSubmit){
+            if(Nombre.value == '' || Precio.value == ''){
+                insertError.innerHTML = `<div class="alert alert-danger" role="alert">Todos los campos son obligatorios</div>`;
+                return false;
+            }
+            if(Precio.value < 0.1){
+                insertError.innerHTML = `<div class="alert alert-danger" role="alert">El precio debe ser mayor a 0.1</div>`;
+                return false;
+            }
+            let dataEnvio = {
+                Nombre: Nombre.value,
+                Precio: Precio.value
+            }
+
+            fetch('/registro/nuevo-perfil', {
+                method: 'POST',
+                body: JSON.stringify(dataEnvio),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json()).then(data => {
+                if (data.ok === true) {
+                    insertError.innerHTML = `<div class="alert alert-success" role="alert">Perfil registrado </div>`;
+                    Nombre.value = '';
+                    Precio.value = '';
+                    Nombre.focus();
+                } else {
+                    insertError.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
+                }
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Registrar perfil';
+            });
+
+        }
+    })
+
+</script>

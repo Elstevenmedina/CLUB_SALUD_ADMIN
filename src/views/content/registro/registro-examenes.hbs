@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Análisis</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro de análisis</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/registro/nuevo-examen" method="post" id="form">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-10 col-10">
+                                    <label for="TipoExamen">Tipo de análisis</label>
+                                    <select name="TipoExamen" id="TipoExamen" class="form-controls select2" data-toggle="select2">
+                                        <option value="0" selected>--Seleccione un tipo de examen--</option>
+                                        {{#each tipos}}
+                                            <option value="{{Nombre}}">{{Nombre}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 mt-3 col-2">
+                                    <button id="btnRegistrarTipo" type="button" class="btn btn-outline-info w-100" >+</button>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-10 col-10">
+                                    <label for="Especialidad">Especialidad</label>
+                                    <select name="Especialidad" id="Especialidad" class="form-controls select2-multiple" data-toggle="select2" 
+                                    multiple="multiple" data-placeholder="Seleccione especialidades...">
+                                        {{#each especialidades}}
+                                            <option value="{{Nombre}}">{{Nombre}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 mt-3 col-2">
+                                    <button id="btnRegistrarEspecialidad" type="button" class="btn btn-outline-info w-100" >+</button>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-12 col-12">
+                                    <label for="Perfil">Perfiles</label>
+                                    <select name="Perfil" id="Perfil" class="form-controls select2-multiple" data-toggle="select2" 
+                                    multiple="multiple" data-placeholder="Seleccione perfiles...">
+                                        {{#each perfiles}}
+                                            <option value="{{Nombre}}">{{Nombre}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="Nombre">Nombre del análisis</label>
+                                <input type="text" name="Nombre" id="Nombre" placeholder="Introduzca el nombre del análisis" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="CantidadMaxima">Cantidad maxima</label>
+                                <input type="number" min="1" name="CantidadMaxima" id="CantidadMaxima" class="form-control" placeholder="Introduzca la cantidad maxima">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="Subtipo1">Sub tipo 1 <span class="text-muted">(Opcional)</span></label>
+                            <input type="text" class="form-control" id="Subtipo1" name="Subtipo1" placeholder="Introduzca el subtipo">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="Subtipo2">Sub tipo 2 <span class="text-muted">(Opcional)</span></label>
+                            <input type="text" class="form-control" id="Subtipo2" name="Subtipo2" placeholder="Introduzca el subtipo">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="Subtipo3">Sub tipo 3 <span class="text-muted">(Opcional)</span></label>
+                            <input type="text" class="form-control" id="Subtipo3" name="Subtipo3" placeholder="Introduzca el subtipo">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-4">
+                               <label for="campoTexto">¿Requiere campo de texto?</label>
+                            <select name="campoTexto" id="campoTexto" class="form-control">
+                                <option value="false" selected>No</option>
+                                <option value="true">Si</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="AgregadoPosterior">Agregado posterior al campo de texto <span class="text-muted">(Opcional)</span></label>
+                            <input type="text" class="form-control" id="AgregadoPosterior" name="AgregadoPosterior" placeholder="Introduzca el agregado posterior">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="Puntos">Puntos</label>
+                            <input type="number" name="Puntos" id="Puntos" step="any" placeholder="Introduzca los puntos del examen" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                           <label for="">¿Genera puntos para el médico?</label>
+                           <div class="text-center mt-2">
+                                <input type="checkbox" id="Comisiones" checked data-switch="bool"/>
+                                <label for="Comisiones" data-on-label="Si" data-off-label="No"></label>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-success" type="submit" id="btnSubmit">Registrar examen</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/admin/registro/registro-examenes.js"></script>
+

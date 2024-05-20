@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODELO PDF</title>
+    <link href="/assets/css/app-modern.css" rel="stylesheet" type="text/css" id="app-style" />
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+<style>
+span {
+  border-bottom: 1px solid black;
+}
+</style>
+</head>
+<body> 
+    <div class="" id="exportthis">
+        <div class="row">
+            <div class="col-sm-2">
+                <!--Imagen club salud-->
+                <img src="/images/business/logo.png" alt="" height="150">
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12 mt-3 text-end">
+                        <p>
+                            Fecha:<span style="color: white;">dddddd</span>/
+                            <span style="color: white;">dddddd</span>/
+                            <span style="color: white;">dddddd</span>
+                        </p>
+                    </div>
+                    <div class="col-sm-12">
+                        <!--Nombre del paciente-->
+                            <p>Nombre del paciente <span style="color: white;">MARCO ANTONIO PARANGsUTIRIMICsUASSRsOASSSSSDADSSDS</span></p>
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <p>
+                            Cedula: <span style="color: white;">dddddd</span>
+                            Fecha de Nac.:<span style="color: white;">dddddd</span>/
+                            <span style="color: white;">dddddd</span>/
+                            <span style="color: white;">dddddd</span>
+                            Edad: <span style="color: white;">dsdd</span>
+                            Sexo: F<span style="color: white;">dsd</span>
+                            M<span style="color: white;">dsd</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6"></div>
+            <div class="col-sm-2 mt-3">
+                <!--Examenes-->
+                <h4>HEMATOLOGIA</h4>
+                <ul>
+                    {{#each Hematologia}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}} {{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+
+                            </li>
+                    {{/each}}
+                </ul>
+                <h4>BIOQUIMICA SANGUINEA</h4>
+                <ul>
+                    {{#each BioquimicaSanguinea}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                            </li>
+                    {{/each}}
+                </ul>
+                <h4>BIOQUIMICA URINARIA</h4>
+                <ul>
+                    {{#each BioquimicaUrinaria}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}    
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>COPROLOGIA</h4>
+                <ul>
+                    {{#each Coprologia}}
+                        <li class="text-dark" style="line-height: 24px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                            </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="col-sm-2 mt-3">
+                <h4>SEROLOGIA E INFECCIOSAS</h4>
+                <ul >
+                    {{#each SerologiaInfecciosas}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}   
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}} 
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>HORMONAS</h4>
+                <ul>
+                    {{#each Hormonas}}
+                        <li class="text-dark" style="line-height: 18px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="col-sm-2 mt-3">
+                <h4>BACTERIOLOGIA</h4>
+                <ul>
+                    {{#each Bacteriologia}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important;"> 
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>INMUNOLOGIA</h4>
+                <ul>
+                    {{#each Inmunologia}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>ESPECIALES</h4>
+                <ul>
+                    {{#each Especiales}}
+                        <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}    
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul> 
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>DROGAS</h4>
+                <ul>
+                    {{#each Drogas}}
+                        <li class="text-dark" style="line-height: 22px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                        </li>
+                    {{/each}}
+                </ul>
+                <h4>OTROS</h4>
+                <ul>
+                    {{#each Otros}}
+                        <li class="text-dark" style="line-height: 24px; list-style-type:none !important">
+                            <i class="mdi mdi-crop-square"></i> {{Nombre}}{{dosPuntos}}
+                            {{#if CampoTexto}}
+                                <span style="color: white;">asssssssssss</span>{{AgregadoPosterior}}
+                            {{/if}}<br/>
+                            {{#if dataTipos}}
+                                <ul>
+                                    <li class="text-dark" style="line-height: 17px; list-style-type:none !important">
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo1}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo2}} 
+                                        <i class="mdi mdi-crop-square"></i> {{SubTipo3}} 
+                                    </li>
+                                </ul>
+                            {{/if}}
+                            </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+   
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.3.0-beta.2/pdfmake.min.js" integrity="sha512-k9XKlDENMt9s19gEl+L6F/r+OWAR4pesbUd8/SKQVMt3b1ECqsRXgLA9XnJoq4J9mjlxLQabfTxf3268lzpFUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.1/dist/html2canvas.min.js"></script>
+<script>
+    html2canvas(document.getElementById('exportthis')).then(function (canvas) {
+        const data = canvas.toDataURL();
+          var docDefinition = {
+            info: {
+                title: 'Petitorio',
+                author: 'Club Salud',
+            },
+            content: [{
+                image: data,
+                width: 1000,
+            }]
+        };
+        pdfMake.createPdf(docDefinition).download("Petitorio.pdf").then((data) =>{
+            setTimeout(() => {
+                window.close()
+            }, 1000);
+        });
+    })
+</script>
+</html>

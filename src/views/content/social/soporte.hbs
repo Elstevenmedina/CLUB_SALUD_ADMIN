@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Red</a></li>
+                    <li class="breadcrumb-item active">Soporte</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Soporte</h4>
+        </div>
+    </div>
+    <div class="col-12 text-end">
+        <a href="/configuracion-soporte" class="btn btn-info">Configuración del soporte</a>
+    </div>
+    <div class="col-12 mt-2">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="header-title">Tickets de soporte</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap table-hover mb-0">
+                        <tbody>
+                            {{#each tickets}}
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1">Fecha</h5>
+                                        <span class="text-muted font-13">{{FechaCorta}}</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1">Número</h5>
+                                        <span class="text-muted font-13">{{Numero}}</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1">Estado</h5> <br>
+                                        <span class="badge badge-{{Color}}-lighten">{{Estado}}</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1">Usuario</h5>
+                                        <h5 class="font-14 mt-1 fw-normal">{{Usuario}} / {{TipoUsuario}}</h5>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1">Tipo ayuda</h5>
+                                        <h5 class="font-14 mt-1 fw-normal">{{Categoria}} / {{Subcategoria}}</h5>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1">Detalle</h5>
+                                        <a href="/detalle-ticket/{{_id}}" class="btn btn-sm btn-outline-info">ver</a>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div> <!-- end table-responsive-->
+            </div> <!-- end card body-->
+        </div> <!-- end card -->
+    </div>
+</div>

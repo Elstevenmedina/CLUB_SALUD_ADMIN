@@ -1,0 +1,44 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Canje</a></li>
+                    <li class="breadcrumb-item active">Constancia de canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Constancia de canjes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Puntos</th>
+                                <th>ID de Transacción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each constancias}}                            
+                                <tr>
+                                    <td><a href="/ver-constancia/{{_id}}" class="text-info" >{{Numero}}</a></td>
+                                    <td>{{Fecha}}</td>
+                                    <td>
+                                        <span class="badge badge-success-lighten">{{PuntosMovidos}} pts</span>
+                                    </td>
+                                    <td>{{idTransaccion}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

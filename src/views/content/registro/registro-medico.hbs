@@ -1,0 +1,125 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Medicos</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro de médico</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="/registro/nuevo-personal" method="post" id="form">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres</label>
+                                <input type="text" name="Nombres" id="Nombres" placeholder="Introduzca los nombres del médico" class="form-control">
+                            </div>
+                        </div>
+                   
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Apellidos">Apellidos</label>
+                                <input type="text" name="Apellidos" id="Apellidos" placeholder="Introduzca los apellidos del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <mb-3>
+                                <label for="Medalla">Medalla</label>
+                                <select name="Medalla" id="Medalla" class="form-control">
+                                    <option value="0">--Seleccione una medalla--</option>
+                                    {{#each medallas}}
+                                        <option value="{{Nombre}}">{{Nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </mb-3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Cedula">Documento</label>
+                                <input type="number" name="Cedula" id="Cedula" placeholder="Introduzca el documento del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="FechaNacimiento">Fecha de nacimiento</label>
+                                <input type="date" name="FechaNacimiento" id="FechaNacimiento" placeholder="Introduzca la fecha de nacimiento del médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Telefono">Teléfono</label>
+                                <input type="number" name="Telefono" id="Telefono" placeholder="Introduzca el teléfono del médico" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección del consultorio</label>
+                                <input type="text" name="Direccion" id="Direccion" placeholder="Introduzca la dirección del consultorio médico" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Especialidad">Especialidad médica</label>
+                                <input type="text" class="form-control" name="Especialidad" id="Especialidad" placeholder="Introduzca alguna especialidad médica">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="numeroCIV">Colegio de médicos</label>
+                                <input type="text" name="numeroCIV" id="numeroCIV" placeholder="Introduzca el número del Colegio de médicos" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="grupoSanguineo">Grupo sanguíneo</label>
+                                <input type="text" name="grupoSanguineo" id="grupoSanguineo" placeholder="Introduzca el grupo sanguíneo del médico" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="Cuenta">Cuenta a enviar los puntos</label>
+                            <textarea name="Cuenta" id="Cuenta" cols="30" rows="2" class="form-control" placeholder="Introduzca cuenta a enviar los puntos generados"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="Correo">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Introduzca el correo electrónico"  autocomplete="username">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="ConfirmarCorreo">Confirmar correo electrónico</label>
+                                <input type="emailConfirm" name="emailConfirm" class="form-control" id="emailConfirm" placeholder="Confirme el correo electrónico" autocomplete="username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-success" type="submit" id="btnSubmit">Registrar médico
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/admin/registro/registro-medico.js"></script>
+

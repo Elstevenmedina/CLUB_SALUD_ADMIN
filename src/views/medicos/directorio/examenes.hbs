@@ -1,0 +1,43 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Directorio</a></li>
+                    <li class="breadcrumb-item active">Análisis</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Directorio de Análisis</h4>
+        </div>
+    </div>
+    <!--<div class="col-sm-12 text-end my-2">
+        <a href="/generar-petitorio" class="btn btn-success">Generar petitorio</a>
+    </div>-->
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each examenes}}                            
+                                <tr>
+                                    <td>{{Nombre}}</td>
+                                    <td>{{Tipo}}</td>
+                                    <td>{{Puntos}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

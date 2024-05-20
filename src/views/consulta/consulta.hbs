@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es-VE">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Iniciar sesión | Club Salud</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Incio de sesión en Club Salud" name="description" />
+        <meta content="Club Salud" name="Rod Panda Studio" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/images/icons/icon.png">
+
+        <!-- App css -->
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app-modern.css" rel="stylesheet" type="text/css" id="app-style" />
+
+    </head>
+    <style>
+        #splash-screen {
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: transform 0.5s ease-in-out;
+        }
+
+    
+        #splash-screen img {
+            width: 200px;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {transform: scale(1);}
+            50% {transform: scale(1.1);}
+            100% {transform: scale(1);}
+        }
+    </style>
+
+    <body class=" pb-0" data-layout-config='{"darkMode":false}'> 
+        <div id="splash-screen">
+            <img src="/images/icons/icon.png" alt="Logo">
+        </div>
+
+          <div class="auth-fluid" id="contenedorDiv">
+            <!--Auth fluid left content -->
+            <div class="auth-fluid-form-box">
+                <div class="align-items-center d-flex h-100">
+                    <div class="card-body">
+
+                        <!-- Logo -->
+                        <div class="auth-brand text-center text-lg-start">
+                            <a href="index.html" class="logo-dark">
+                                 <img src="/images/business/logo.png" alt="" height="65">
+                            </a>
+                            <a href="index.html" class="logo-light">
+                                <img src="/images/business/logo.png" alt="" height="65">
+                            </a>
+                        </div>
+
+                        <!-- title-->
+                        <h4 class="mt-0">Consulta de resultados</h4>
+                        <p class="text-muted mb-4">Ingresa el usuario y clave que fue enviado a tu correo para visualizar los examenes y resultados registrados a su nombre.</p>
+                        <div class="row">
+                            <div class="col-sm-12" id="insertErrors">
+                                {{>errors}}
+                            </div>
+                        </div>
+                    <!-- form -->
+                        
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuario</label>
+                            <input class="form-control" name="usuario" type="text" id="usuario" required=""  placeholder="Usuario" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Clave</label>
+                            <input class="form-control" name="password" type="password" required="" id="password" placeholder="Clave" >
+                        </div>
+                        <div class="d-grid mb-0 text-center">
+                            <a href="#" class="text-muted float-end" id="btnRecuperar">¿Olvidaste tus datos?</a>
+                            <br>
+                            <button class="btn btn-primary" type="button" id="btnBuscar"><i class="mdi mdi-login"></i> Buscar </button>
+                        </div>
+                    </div> <!-- end .card-body -->
+                </div> <!-- end .align-items-center.d-flex.h-100-->
+            </div>
+            <!-- end auth-fluid-form-box-->
+
+            <!-- Auth fluid right content -->
+            <div class="auth-fluid-right text-center" >
+                 <div class="auth-user-testimonial">
+                    <h2 class="mb-3">Club Salud</h2>
+                    <p class="lead"><i class="mdi mdi-format-quote-open"></i> La mejor alianza entre medicos y laboratorios del país  <i class="mdi mdi-format-quote-close"></i>
+                    </p>
+                </div><!-- end auth-user-testimonial-->
+            </div>
+            <!-- end Auth fluid right content -->
+        </div>
+        
+      
+        <!-- end auth-fluid-->
+
+        <!-- bundle -->
+        <script src="assets/js/vendor.min.js"></script>
+        <script src="assets/js/app.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="/js/admin/servicios/info-resultados.js"></script>
+        <script>
+            const usuario = document.getElementById("usuario"),
+            password = document.getElementById("password"),
+            insertErrors = document.getElementById("insertErrors"),
+            contenedorDiv = document.getElementById("contenedorDiv"),
+            btnRecuperar = document.getElementById("btnRecuperar"),
+            btnBuscar = document.getElementById("btnBuscar");
+            
+            
+            window.addEventListener("load", function(){
+                document.getElementById("splash-screen").style.transform = "translateY(-100%)";
+            });
+
+
+            const recuperarDatos = () => {
+                Swal.fire({
+                    title: 'Recuperar datos',
+                    html: `
+                        <div class="mb-3">
+                            <label for="documento" class="form-label">Documento identidad</label>
+                            <input class="form-control" name="documento" type="text" id="documento" required=""  placeholder="Documento" >
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Recuperar',
+                    cancelButtonText: 'Cancelar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (data) => {
+                        let documento = document.getElementById("documento").value;
+                        if(documento == ""){
+                            Swal.showValidationMessage(`Debe ingresar el documento de identidad`);
+                        }
+                        return data = {
+                            documento: documento
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //loading with sweetalert
+                        Swal.fire({
+                            title: 'Enviando datos',
+                            html: 'Por favor espere...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        });
+
+                        fetch('/recuperar-datos-consulta-pacientes', {
+                            method: 'POST',
+                            body: JSON.stringify(result.value),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then((data) => {
+                            return data.json()
+                        }).then((data) => {
+                            if(data.ok){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Datos enviados',
+                                    text: `Se han enviado las credenciales al correo ${data.correo}. Por favor verifique su bandeja de entrada o spam.`
+                                })
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'No se ha encontrado un usuario registrado con el documento de identidad ingresado.'
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+
+            btnBuscar.addEventListener("click", function(){
+                if(usuario.value == "" || password.value == ""){
+                    insertErrors.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>¡Error!</strong> Debe ingresar el usuario y clave.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    return;
+                }
+                let data = {
+                    usuario: usuario.value,
+                    password: password.value
+                }
+                fetch('/consulta-paciente',{
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then((data) =>{
+                    return data.json( )
+                }).then((data) =>{
+                    if(data.ok){
+                        document.getElementById("splash-screen").style.transform = "translateY(0%)";
+                        
+                        contenedorDiv.innerHTML = ""    
+                        contenedorDiv.classList.remove("auth-fluid");
+
+                        setTimeout(() => {
+                            document.getElementById("splash-screen").style.transform = "translateY(100%)";
+
+                            let tr = "";
+
+                            for(i=0; i< data.examenes.length; i++){
+                                let examen = data.examenes[i]
+                                let linea = `
+                                    <tr>
+                                        <td>${examen.Fecha}</td>
+                                        <td>
+                                            <button class="btn btn-primary examen" type="button" data-numero="${examen.Numero}">
+                                                <i class="mdi mdi-eye"></i> Ver
+                                            </button>
+                                        </td>
+                                        <td>
+                                            ${examen.Estado}
+                                        </td>
+                                        <td>
+                                            <a  class="btn btn-success resultados" data-numero="${examen.Numero}" href="javascript:void(0)">
+                                                <i class="mdi mdi-eye"></i> Ver
+                                            </a>
+                                        </td>
+                                    </tr>
+                                `
+                                tr += linea;
+                            }
+                            contenedorDiv.innerHTML = `
+                                <div class="container-fluid">
+                                    <div class="card" style="height: 100vh">
+                                        <div class="card-header text-center">
+                                            <img src="/images/business/logo.png" alt="" width="200px">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row m-2">
+                                                <div class="col-sm-12 text-start my-2">
+                                                    <button class="btn btn-outline-info" style="font-size:25px" id="btnRegresar">
+                                                        <i class="dripicons-backspace"></i>
+                                                        Regresar
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <div class="col-sm-12 text-center">
+                                                                    <img src="/assets/images/users/avatar-${data.paciente.Imagen}.jpg" class="rounded-circle" width="150px" height="150px" alt="">
+                                                                </div>
+                                                                <div class="col-sm-12 text-center">
+                                                                    <h1 id="paciente">${data.paciente.Nombres} ${data.paciente.Apellidos}</h1>
+                                                                </div>
+                                                                <div class="col-sm-12 text-center">
+                                                                    <h4>Documento de identidad: <b>${data.paciente.Documento}</b></h4>
+                                                                </div>
+                                                                <div class="col-sm-12 text-center">
+                                                                    <h4>Fecha nacimiento: <b>${data.paciente.FechaNacimiento}</b></h4>
+                                                                </div>
+                                                                <div class="col-sm-12 text-center">
+                                                                    <h4>Sexo: <b>${data.paciente.Sexo}</b></h4>
+                                                                </div>
+                                                                <div class="col-sm-12 text-center">
+                                                                    <h4>Edad: <b>${data.paciente.Edad}</b></h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                                                        <div class="card-header">
+                                                            <div class="card-header text-center">
+                                                                <h1>Examenes</h1>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">Fecha</th>
+                                                                            <th scope="col">Descripción</th>
+                                                                            <th scope="col">Estado</th>
+                                                                            <th scope="col">Resultados</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        ${tr}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                        }, 2000);
+                    }else{
+                        insertErrors.innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>¡Error!</strong> ${data.msg}.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                    }
+                })
+
+            }, true);
+            
+        document.addEventListener('click', e => {
+            if (e.target.classList.contains('examen')) {
+                let data = {
+                    Numero: e.target.dataset.numero
+                }
+                fetch('/solicitar-datos-examen', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then((res) => {
+                    return res.json()
+                }).then((data) => {
+                    let ul = ""
+                    data.ListaExamenes.forEach((examen) => {
+                        if (examen.subtipo) {
+                            li = `<li class="text-start" style="line-height: 1.2">${examen.nombre}  ${examen.subtipo}</li>`
+                            ul += li
+                        } else if (examen.agregadoPosterior) {
+                            li = `<li class="text-start" style="line-height: 1.2">${examen.nombre}  ${examen.agregadoPosterior}</li>`
+                            ul += li
+                        } else {
+                            li = `<li class="text-start list-item" style="line-height: 1.2">${examen.nombre}</li>`
+                            ul += li
+                        }
+                    })
+                    swal.fire({
+                        title: `Examen #${data.Numero}`,
+                        type: 'info',
+                        html: `
+                        <h4 class="text-start">Examenes solicitados:</h4>  
+                        <ul class="list-group list-group-flush ">
+                            ${ul}
+                        </ul>
+                    `,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        confirmButtonText: 'Ok',
+                    })
+                })
+            }
+            if(e.target.matches('#btnRegresar')){
+                location.href = "/consulta-pacientes"
+            }
+            if(e.target.matches('#btnRecuperar')){
+                recuperarDatos()
+            }
+        })
+
+
+        </script>
+
+    </body>
+
+</html>

@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Historial</a></li>
+                    <li class="breadcrumb-item active">Puntos</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Historial puntos</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="text-light">Puntos</h4>
+            </div>
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Fecha</th>
+                                <th class="text-center">Tipo</th>
+                                <th class="text-center">Paciente</th>
+                                <th class="text-center">Puntos anteriores</th>
+                                <th class="text-center">Puntos ajustados</th>
+                                <th class="text-center">Puntos actuales</th>
+                                <th class="text-center">Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each historial}}                            
+                                <tr class="text-{{Color}}">
+                                    <td class="text-center">{{Fecha}}</td>
+                                    <td class="text-center">{{TipoMovimiento}}</td>
+                                    <td class="text-center">{{Paciente}}</td>
+                                    <td class="text-center">{{PuntosAnteriores}}</td>
+                                    <td class="text-center">{{PuntosMovidos}}</td>
+                                    <td class="text-center">{{PuntosActuales}}</td>
+                                    <td class="text-center">{{Comentario}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item active">Registros masivos de {{tipoDescarga}}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registros masivos de {{tipoDescarga}}</h4>
+        </div>
+    </div>
+     <div class="col-12">
+        <div class="row">
+            {{>success}}
+            {{>errors}}
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-dark text-center">Registro masivo</h3>
+                    </div>
+                        <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="">Exportar</label>
+                                <a href="/api/importar-formato-registro-masivo/{{tipoNumero}}" class="btn btn-outline-primary w-100" style="height: 43px;">Exportar formato</a>
+                            </div>
+                            <div class="col-sm-6">
+                            <form method="POST" id="formImport" action="/api/cargar-archivo-registro-masivo/{{tipoNumero}}" enctype="multipart/form-data">
+                                    <label for="">Importar</label>
+                                    <input type="file" name="Control" class="form-control" id="customFiles" style="height: 43px;" >
+                                    <button type="submit" class="btn btn-success w-25 mt-2 w-100">ENVIAR</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document,
+        $form = d.getElementById('formImport');
+
+
+    $form.addEventListener('submit', async e => {
+        Swal.fire({
+            title: 'Espere por favor',
+            text: 'Estamos procesando su solicitud',
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+
+    })
+
+</script>

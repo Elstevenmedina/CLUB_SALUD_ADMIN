@@ -1,0 +1,46 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-canje">Canje</a></li>
+                    <li class="breadcrumb-item active">Constancia de canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Constancia de canjes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Médico</th>
+                                <th>Documento del médico</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each constancias}}                            
+                                <tr>
+                                    <td><a href="/ver-constancia/{{_id}}" class="text-info" >{{Numero}}</a></td>
+                                    <td>{{FechaRecibo}}</td>
+                                    <td>{{Medico}}</td>
+                                    <td>{{Cedula}}</td>
+                                    <td>
+                                        <span class="badge badge-success-lighten">{{PuntosMovidos}} pts</span>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,201 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Canje</a></li>
+                    <li class="breadcrumb-item active">Solicitud de canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Solicitud de canjes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Nueva solicitud</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 my-2">
+                        <label for="medico">Médico</label>
+                        <select name="medico" id="medico" class="form-control  select2" data-toggle="select2">
+                            <option value="0">--Seleccione un médico--</option>
+                            {{#each medicos}}
+                                <option value="{{_id}}" data-puntos="{{PuntosCanjeables}}">{{Nombres}} {{Apellidos}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <label for="puntosDisponibles">Puntos disponibles</label>
+                        <input type="number" step="any" name="puntosDisponibles" id="puntosDisponibles" class="form-control" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="tipoCanje">Seleccione el tipo de canje</label>
+                        <select name="tipoCanje" id="tipoCanje" class="form-control  select2" data-toggle="select2">
+                            <option value="0">--Seleccione el tipo de canje--</option>
+                            {{#each tiposCanjes}}
+                                <option value="{{Nombre}}" data-descripcion="{{Descripcion}}" data-puntos="{{Puntos}}">{{Nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="puntosMinimos">Puntos mínimos  para este canje</label>
+                        <input type="text" class="form-control" id="puntosMinimos" disabled>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="puntosCanjear">Puntos a canjear</label>
+                        <input type="text" class="form-control" data-max="{{puntosDisponibles}}" id="puntosCanjear" placeholder="Puntos a canjear">
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <button class="btn btn-success mt-2 w-100" id="btnEnviar">Enviar solicitud</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    $tipoCanje = d.getElementById('tipoCanje'),
+    $medico = d.getElementById('medico'),
+    $puntosDisponibles = d.getElementById('puntosDisponibles'),
+    $puntosMinimos = d.getElementById('puntosMinimos'),
+    $btnEnviar = d.getElementById('btnEnviar'),
+    $puntosCanjear = d.getElementById('puntosCanjear');
+
+    $medico.onchange = (e) =>{
+        if(e.target.value ==  "0"){
+            $puntosDisponibles.value = 0 
+            $puntosCanjear.dataset.max = 0
+        }else{
+            const $this = e.target;
+            const puntosDisponibles = $this.options[$this.selectedIndex].dataset.puntos;
+            $puntosDisponibles.value = puntosDisponibles 
+            $puntosCanjear.dataset.max = puntosDisponibles
+        }
+    }
+
+
+    $tipoCanje.onchange = (e) =>{
+        if(e.target.value == 0){
+            $puntosMinimos.value = "";
+        }else{
+            const $this = e.target;
+            const descripcion = $this.options[$this.selectedIndex].dataset.descripcion;
+            const puntos = $this.options[$this.selectedIndex].dataset.puntos;
+            $puntosMinimos.value = puntos;
+        }
+    }
+
+    d.addEventListener('click', e=>{
+        if(e.target == $btnEnviar){
+            if($tipoCanje.value == 0){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes seleccionar un tipo de canje',
+                })
+                return;
+            }
+            else if($puntosCanjear.value == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes ingresar los puntos a canjear',
+                })
+                return;
+            }
+            else if(+$puntosCanjear.value < +$puntosMinimos.value){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Los puntos a canjear deben ser mayor o igual a los Puntos mínimos  para este canje',
+                })
+                return;
+            } else if(+$puntosCanjear.value > +$puntosCanjear.dataset.max){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `Los puntos a canjear no deben ser mayor a los disponibles "${$puntosCanjear.dataset.max}"`,
+                })
+                return;
+            }else{
+                //crear resumen con los datos y sweetalert
+                Swal.fire({
+                    title: 'Resumen de solicitud',
+                    html: `
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>Tipo de canje: <b>${$tipoCanje.options[$tipoCanje.selectedIndex].text}</b></p>
+                            </div>  
+                            <div class="col-sm-12">
+                                <p>Descripción: <b>${$tipoCanje.options[$tipoCanje.selectedIndex].dataset.descripcion}</b></p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p>Puntos a canjear: <b>${$puntosCanjear.value}</b></p>
+                            </div>
+                        <div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Enviar solicitud',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //loading with sweealert
+                        Swal.fire({
+                            title: 'Enviando solicitud',
+                            html: 'Por favor espere...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                        const data = {
+                            tipoCanje: $tipoCanje.value,
+                            puntosCanjear: $puntosCanjear.value,
+                            _idmedico: $medico.value
+                        }
+
+                        console.log(data)
+
+                        return
+                        fetch('/nueva-solicitud-canje-admin', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.ok){
+                                Swal.fire(
+                                    'Solicitud enviada',
+                                    'La solicitud de canje se ha enviado correctamente',
+                                    'success'
+                                ).then((data) =>{
+                                    location.reload();
+                                })
+                            }else{
+                                Swal.fire(
+                                    'Error',
+                                    'Ha ocurrido un error al enviar la solicitud',
+                                    'error'
+                                )
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
+    
+
+
+</script>

@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+                   <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item"><a href="//tipos-canjes">Canjes</a></li>
+                    <li class="breadcrumb-item active">Ficha</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{canje.Nombre}}</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="Nombre">Nombre del canje</label>
+                        <input type="text" name="Nombre" value="{{canje.Nombre}}" id="Nombre" required class="form-control" placeholder="Nombre del canje">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="Precio">Valor puntos</label>
+                        <input type="number" name="Puntos" id="Puntos" value="{{canje.Puntos}}" required min="0" step="any" class="form-control" placeholder="Precio del canje">
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <label for="Descripcion">Descripción</label>
+                        <textarea name="Descripcion" id="Descripcion" required class="form-control" placeholder="Descripción del canje">{{canje.Descripcion}}</textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success" id="btnSubmit" data-id="{{canje._id}}">Editar canje</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const d = document,
+        $btnSubmit = d.getElementById('btnSubmit'),
+        $insertError = d.getElementById('insertError'),
+        $Nombre = d.getElementById('Nombre'),
+        $Puntos = d.getElementById('Puntos'),
+        $Descripcion = d.getElementById('Descripcion');
+
+    $btnSubmit.addEventListener('click', async e => {
+        if($Nombre.value == '' || $Puntos.value == '' || $Descripcion.value == ''){
+            $insertError.innerHTML = `<div class="alert alert-danger" role="alert">
+            <strong>¡Error!</strong> Debe llenar todos los campos.
+            </div>`
+            return false;
+        }
+        if($Puntos.value < 0){
+            $insertError.innerHTML = `<div class="alert alert-danger" role="alert">
+            <strong>¡Error!</strong> El valor de los puntos debe ser mayor a 0.
+            </div>`
+            return false;
+        }
+
+        $btnSubmit.setAttribute('disabled', 'disabled');
+        $btnSubmit.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Registrando datos...
+        `
+
+        fetch('/edicion/tipo-canjes', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Nombre: $Nombre.value,
+                Puntos: $Puntos.value,
+                Descripcion: $Descripcion.value,
+                _id : $btnSubmit.dataset.id
+            })
+        })
+        .then((data) =>{
+            return data.json()
+        })
+        .then((data) =>{
+            if (data.ok) {
+
+                $insertError.innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                        <i class="dripicons-checkmark me-2"></i> Tipo de canje editado correctamente.
+                    </div>
+                `;
+                $btnSubmit.disabled = false;
+                $btnSubmit.innerHTML = `Editar canje`;
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else {
+                $btnSubmit.disabled = false;
+                $btnSubmit.innerHTML = `Editar canje`;
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i> ${data.msg}.
+                    </div>
+                 `;
+            }
+        })
+
+    })
+
+
+
+</script>

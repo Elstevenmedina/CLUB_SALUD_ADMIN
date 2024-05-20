@@ -1,0 +1,119 @@
+<style>
+    .openChatOnly:hover{
+        background-color: rgba(41,195,79,0.1);
+    }
+    .filtro {
+        display: none;
+    }
+</style>
+<div class="content-page" id="chat">
+    <div class="content">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Club salud</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Red</a></li>
+                            <li class="breadcrumb-item active">Chat</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title" id="page-title" data-id="{{_idUsuario}}">Chat</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <!-- start chat users-->
+            <div class="col-xxl-3 col-xl-6 order-xl-1">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <!-- end nav-->
+                        <div class="tab-content">
+                            <div class="tab-pane show active card-body pb-0" id="newpost">
+
+                                <!-- start search box -->
+                                <div class="app-search">
+                                    <form>
+                                        <div class="mb-2 position-relative">
+                                            <input type="text" class="form-control" id="search" placeholder="Contactos..." />
+                                            <span class="mdi mdi-magnify search-icon"></span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- end search box -->
+                            </div>
+
+                            <!-- users -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card-body py-0" id="cardContactos" data-simplebar style="max-height: 562px">
+                                        {{#each contactosAgregados}}
+                                            <a href="javascript:void(0);" data-idreq="{{_idReq}}" data-id="{{_id}}" class="usuarios openChat text-body" data-usuario="{{Nombres}} {{Apellidos}}">
+                                                <div class="d-flex align-items-start mt-1 p-2 openChat openChatOnly" data-idreq="{{_idReq}}" data-id="{{_id}}">
+                                                    <img src="{{RutaImage}}" class="me-2 rounded-circle openChat" height="50px" width="50px" alt="Brandon Smith" data-idreq="{{_idReq}}" data-id="{{_id}}"/>
+                                                    <div class="w-100 overflow-hidden openChat" data-idreq="{{_idReq}}" data-id="{{_id}}">
+                                                        <h5 class="mt-0 mb-0 font-14 openChat" data-idreq="{{_idReq}}"  data-id="{{_id}}">
+                                                            <span class="float-end text-muted font-12 openChat" data-idreq="{{_idReq}}"  data-id="{{_id}}">{{Tiempo}}</span> {{Nombres}} {{Apellidos}}
+                                                        </h5>
+                                                        <p class="mt-1 mb-0 text-muted font-14 openChat" data-idreq="{{_idReq}}"  data-id="{{_id}}">
+                                                            {{#if Notificacion}}
+                                                                <span class="w-25 float-end text-end text-primary notification">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                                                        <circle cx="8" cy="8" r="8"/>
+                                                                    </svg>
+                                                                </span>
+                                                            {{/if}}
+                                                            <span class="w-75 openChat messajeSpan" data-idreq="{{_idReq}}"  data-id="{{_id}}">{{Mensaje}}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        {{/each}}
+                                    </div>
+                                    <!-- end slimscroll-->
+                                </div>
+                                <!-- End col -->
+                            </div>
+                            <!-- end users -->
+                        </div>
+                        <!-- end tab content-->
+                    </div>
+                    <!-- end card-body-->
+                </div>
+                <!-- end card-->
+            </div>
+            <!-- end chat users-->
+
+            <!-- chat area -->
+        <div class="col-xxl-9 col-xl-12 order-xl-2">
+            <div class="card" id="cardChat">
+              <div class="card-header text-center">
+                  <h2 >Selecciona un contacto para iniciar una Conversaicón</h2>
+              </div>
+              <div class="card-body">
+                <ul class="conversation-list px-3" id="conversation-list" data-simplebar style="max-height: 538px">
+                </ul>
+                <div class="row px-3 pb-3">
+                    <div class="col">
+                        <div class="mt-2 bg-light p-3 rounded">
+                            <div class="row">
+                                <div class="col-sm-11 mb-2 mb-sm-0">
+                                    <textarea name="msg" id="msg" class="form-control border-1" cols="1" rows="2" required="" placeholder="Seleccione un contacto para iniciar una Conversaicón" disabled></textarea>
+                                </div>
+                                <div class="col-sm-1">
+                                        <button type="button" id="btnSend" class="btn btn-primary w-100" style="height: 55px;" disabled><i class='uil uil-message'></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- end chat area-->
+    </div>
+    <!-- End Content -->
+</div>

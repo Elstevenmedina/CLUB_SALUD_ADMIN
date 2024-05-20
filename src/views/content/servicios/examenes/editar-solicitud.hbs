@@ -1,0 +1,438 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-examenes">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Editar solicitud #{{solicitud.Numero}}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Editar solicitud #<span id="numeroSolicitud">{{solicitud.Numero}}</span></h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Formulario de edición</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="Medico">Médico</label>
+                            <select name="Medico" id="Medico" class="form-control select2" data-toggle="select2">
+                                <option value="{{solicitud._idMedico}}"  data-comision="{{solicitud.Comision}}" selected>{{solicitud.Medico}}</option>
+                                {{#each medicos}}
+                                    <option value="{{_id}}" data-comision="{{Comision}}">{{Nombres}} {{Apellidos}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="Paciente">Paciente</label>
+                            <select name="Paciente" id="Paciente" class="form-control select2" data-toggle="select2" >
+                                <option value="{{solicitud._idPaciente}}" selected>{{solicitud.Paciente}}</option>
+                                {{#each pacientes}}
+                                    <option value="{{_id}}" >{{Nombres}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 d-none">
+                        <input type="number" id="Comision" value="{{solicitud.Comision}}">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    
+                    <div class="col-sm-4">
+                        <label for="Examenes">Análisis</label>
+                        <select name="Examenes" id="Examenes" class="form-control select2" data-toggle="select2">
+                            <option value="0">--Seleccione un análisis--</option>
+                            {{#each examenes}}
+                                <option value="{{_id}}">{{Nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="Gramos">Gramos</label>
+                        <input type="text" name="Gramos" id="Gramos" class="form-control" readonly>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Opciones">Opciones</label>
+                        <select name="Opciones" id="Opciones" class="form-control select2" data-toggle="select2" disabled> </select>
+                    </div>
+                    <div class="col-sm-2 mt-2">
+                        <button class="btn btn-info mt-2 w-100" id="btnAgregar">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>Cantidad</td>
+                            <td>Puntos U.</td>
+                            <td>Puntos T.</td>
+                            <td>Eliminar</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {{#each solicitud.ListaExamenes}}
+                            <tr>
+                                <td>{{nombre}}</td>
+                                <td>
+                                    <input class="form-control inputCantidad" data-id="{{id}}" value="{{cantidad}}" data-tipo="{{tipo}}">
+                                </td>
+                                <td>
+                                    <input class="form-control inputPrecioUnitario" value="{{puntosUnitarios}}" dat-id="{{id}}">
+                                </td>
+                                <td>{{puntos}}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end text-danger">Total Puntos:</td>
+                            <td id="totalPuntos">{{solicitud.PuntosTotales}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end text-danger">Total comisión:</td>
+                            <td id="PuntosMedico">{{solicitud.PuntosMedico}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end text-danger">Puntos netos:</td>
+                            <td id="PuntosNetos">{{solicitud.PuntosNetos}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end text-info">Descuento:</td>
+                            <td>
+                                <input type="number" name="Descuento" id="Descuento" class="form-control Descuento" value="{{solicitud.PuntosDescuento}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end text-info">No genera puntos al médico</td>
+                            <td> 
+                                <input class="form-check-input" type="checkbox" value="" id="noGeneraComision" 
+                                style="border-color: green;" {{checkedNoGeneraPuntos}}>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end text-info">No generar puntos</td>
+                            <td> 
+                               <input class="form-check-input" type="checkbox" value="" id="noGenerarPuntos"
+                               style="border-color: green;" {{checkedNoGeneraComision}}>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="text-end">
+            <button class="btn btn-success my-2" id="btnGuardar">Guardar cambios</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document,
+    Medico = d.getElementById('Medico'),
+    Paciente = d.getElementById('Paciente'),
+    Examenes = d.getElementById('Examenes'),
+    Gramos = d.getElementById('Gramos'),
+    Opciones = d.getElementById('Opciones'),
+    btnAgregar = d.getElementById('btnAgregar'),
+    tbody = d.getElementById('tbody'),
+    PuntosMedico = d.getElementById('PuntosMedico'),
+    PuntosNetos = d.getElementById('PuntosNetos'),
+    Descuento = d.getElementById('Descuento'),
+    Comision = d.getElementById('Comision'),
+    noGenerarPuntos = d.getElementById('noGenerarPuntos'),
+    numeroSolicitud = d.getElementById('numeroSolicitud'),
+    noGeneraComision = d.getElementById('noGeneraComision'),
+    totalPuntos = d.getElementById('totalPuntos');
+
+    let examenFoco
+
+    const actualizarPreciosTotales = (generaComision) =>{
+        let descuento = Descuento.value
+        let total = 0
+        for(i=0; i< tbody.children.length; i++){
+            total = (+total + +tbody.children[i].children[3].textContent).toFixed(2)
+        }
+
+        let comisionString = Comision.value.toString()
+        comisionString = comisionString.replaceAll('.', '')
+        comisionString = comisionString.replaceAll(',', '')
+        let factorComision = (+comisionString < 10) 
+                            ? `0.0${comisionString}` 
+                            : `0.${comisionString}`
+
+        total = (+total - +descuento).toFixed(2)
+
+        let puntosGeneradosMedico = (+factorComision * +total).toFixed(2)
+        let puntosNetosGenerados = (+total - +puntosGeneradosMedico).toFixed(2)
+        if(+descuento > puntosGeneradosMedico){
+            puntosGeneradosMedico = 0
+        }
+
+        if(!generaComision && !noGeneraComision.checked) {
+            PuntosMedico.textContent = puntosGeneradosMedico
+        }else{
+            puntosNetosGenerados = (+puntosNetosGenerados + +puntosGeneradosMedico).toFixed(2)
+            PuntosMedico.textContent = 0
+        }
+        if(!noGenerarPuntos.checked) {
+            totalPuntos.textContent = total
+            PuntosNetos.textContent = puntosNetosGenerados
+        }else{
+            totalPuntos.textContent = 0
+            PuntosNetos.textContent = 0
+            PuntosMedico.textContent = 0
+        }
+    }
+
+    const actualizarCantidadLista = (e) =>{
+        let valor = e.target.value
+        let linea = e.target.parentElement.parentElement
+        linea.children[3].textContent = (+valor * +linea.children[2].firstElementChild.value).toFixed(2)
+        actualizarPreciosTotales()
+    }
+
+    const actualizarPrecioLista = (e) =>{
+        let valor = e.target.value
+        let linea = e.target.parentElement.parentElement
+        linea.children[3].textContent = (+valor * +linea.children[1].firstElementChild.value).toFixed(2)
+        actualizarPreciosTotales()
+
+    }
+
+    const validacionExamenes = () =>{
+        if(Examenes.value == 0){
+            Swal.fire({
+                icon:'error',
+                title:'Error',
+                text:'Debe seleccionar un examen'
+            })
+            return false
+        }
+        if(!Gramos.hasAttribute('readonly') && Gramos.value == ""){
+            Swal.fire({
+                icon:'error',
+                title:'Error',
+                text:'Debe introducir los gramos'
+            })
+            return false
+        }
+        if(!Opciones.hasAttribute('disabled') && (Opciones.value == "" || Opciones.value == "0")){
+            Swal.fire({
+                icon:'error',
+                title:'Error',
+                text:'Debe seleccionar una opción'
+            })
+            return false
+        }
+        return true
+    }
+
+    const agregarExamen = () =>{
+        if(validacionExamenes()){
+            let gramosTexto = ""
+            let opcionesTexto = ""
+            if(Gramos.value != ""){
+                gramosTexto = `(${Gramos.value} grs)`
+            }
+            if(Opciones.value != 0 || Opciones.value != ""){
+                opcionesTexto = `${Opciones.value}`
+            }
+
+
+            let tr = `
+                <tr>
+                    <td>${Examenes.options[Examenes.selectedIndex].textContent} ${gramosTexto} ${opcionesTexto}</td>
+                    <td>
+                        <input class="form-control inputCantidad" data-id="${examenFoco._id}" data-tipo="${examenFoco.Tipo}" value="1">
+                    </td>
+                    <td>
+                        <input class="form-control inputPrecioUnitario" value="${examenFoco.Puntos}" dat-id="${examenFoco.id}">
+                    </td>
+                    <td>${examenFoco.Puntos}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm btnEliminar">Eliminar</button>
+                    </td>
+                </tr>
+            `
+
+            tbody.innerHTML += tr
+
+            actualizarPreciosTotales(examenFoco.Comisiones)
+        }
+    }
+
+    const eliminarFila = (e) =>{
+        let fila = e.target.parentElement.parentElement
+        tbody.removeChild(fila)
+        actualizarPreciosTotales()
+    }
+
+    const evaluarEdicion = () =>{
+        if(tbody.children.length == 0){
+            Swal.fire({
+                icon:'error',
+                title:'Error',
+                text:'Debe agregar como mínimo un análisis a la lista'
+            })
+            return false
+        }
+
+        return true
+    }
+
+    const registrarEdicion = () =>{
+        if(evaluarEdicion()){
+            let listaExamenes = []
+
+            for(i=0; i< tbody.children.length; i++){
+                listaExamenes.push({
+                    id: tbody.children[i].children[1].firstElementChild.dataset.id,
+                    nombre: tbody.children[i].children[0].textContent,
+                    puntos: tbody.children[i].children[3].textContent,
+                    cantidad: tbody.children[i].children[2].firstElementChild.value,
+                    tipo: tbody.children[i].children[1].firstElementChild.dataset.tipo
+                })
+            }
+
+            let dataEnvio = {
+                Numero : numeroSolicitud.textContent,
+                Paciente: Paciente.value,
+                listaExamenes,
+                DescuentoPuntos: Descuento.value,
+                PuntosDescuento: Descuento.value,
+                PuntosFinal : totalPuntos.textContent,
+                puntosObtenidosMedico : PuntosMedico.textContent,
+                puntosTotalesFinales :  PuntosNetos.textContent,
+                noGeneraComision : noGeneraComision.checked,
+                noGenerarPuntos :  noGenerarPuntos.checked,
+                Medico : Medico.value,
+            }
+
+            Swal.fire({
+                title: '¿Estas seguro de editar la solicitud?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, editar solicitud'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/editar-solicitud',{
+                        method: 'POST',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body: JSON.stringify(dataEnvio)
+                    })
+                    .then((data) =>{
+                        return data.json()
+                    })
+                    .then((data) =>{
+                        location.href = "/editar-solicitud"
+                    })
+                }
+            })
+        }
+    }
+
+    Examenes.change = () =>{
+        if(Examenes.value != 0){
+            fetch(`/solicitar-informacion-examen/${Examenes.value}`)
+            .then((data) => data.json())
+            .then((data) =>{
+                examenFoco = data.examen
+                if(data.examen.AgregadoPosterior != ""){
+                    Gramos.removeAttribute('readonly')
+                }else{
+                    if(!Gramos.hasAttribute('readonly')){
+                        Gramos.setAttribute('readonly', '')
+                    }
+                }
+                Opciones.innerHTML = ""
+                if(data.examen.SubTipo1 != ""){
+                    Opciones.removeAttribute('disabled','')
+                    Opciones.innerHTML += `<option value="${data.examen.SubTipo1}">${data.examen.SubTipo1}</option>`
+                }
+                if(data.examen.SubTipo2 != ""){
+                    Opciones.removeAttribute('disabled','')
+                    Opciones.innerHTML += `<option value="${data.examen.SubTipo2}">${data.examen.SubTipo2}</option>`
+                }
+                if(data.examen.SubTipo3 != ""){
+                    Opciones.removeAttribute('disabled','')
+                    Opciones.innerHTML += `<option value="${data.examen.SubTipo3}">${data.examen.SubTipo3}</option>`
+                }
+                if(data.examen.SubTipo1 == "" && data.examen.SubTipo2 == "" && data.examen.SubTipo3 == ""){
+                    if(!Opciones.hasAttribute('disabled')){
+                        Opciones.setAttribute('disabled','')
+                    }
+                }
+            })
+        }
+    }
+
+    Medico.onchange = () =>{
+        Comision.value = +Medico.options[Medico.selectedIndex].dataset.comision
+    }
+
+    d.addEventListener('change', e=>{
+        if(e.target.matches('.inputCantidad')){
+            actualizarCantidadLista(e)
+        }
+        if(e.target.matches('.inputPrecioUnitario')){
+            actualizarPrecioLista(e)
+        }
+        if(e.target.matches('.Descuento')){
+            if(e.target.value <= 0){
+                e.target.value = 0
+            }else{
+                actualizarPreciosTotales()
+            }
+
+        }
+        if(e.target.matches('#noGeneraComision')){
+            actualizarPreciosTotales()
+        }
+        if(e.target.matches('#noGenerarPuntos')){
+            actualizarPreciosTotales()
+        }
+    })
+
+    d.addEventListener('click', e=>{
+        if(e.target.matches('#btnAgregar')){
+            agregarExamen()
+        }
+        if(e.target.matches('.btnEliminar')){
+            eliminarFila(e)
+        }
+        if(e.target.matches('#btnGuardar')){
+            registrarEdicion()
+        }
+    })
+
+</script>

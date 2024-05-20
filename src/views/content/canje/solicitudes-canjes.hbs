@@ -1,0 +1,130 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-canje">Canje</a></li>
+                    <li class="breadcrumb-item active">Solicitudes canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Solicitudes de canje</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Médico</th>
+                                <th>Documento del médico</th>
+                                <th>Puntos</th>
+                                <th>Tipo</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each solicitudes}}                            
+                                <tr>
+                                    <td>{{Numero}}</td>
+                                    <td>{{FechaCanje}}</td>
+                                    <td>{{Medico}}</td>
+                                    <td>{{Cedula}}</td>
+                                    <td>
+                                        <span class="badge badge-success-lighten">{{PuntosCanjeados}} pts</span>
+                                    </td>
+                                    <td>{{TipoCanje}}</td>
+                                    <td>
+                                        <span class="badge badge-{{color}}-lighten text-dark">{{Estado}}</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info btnAtender" data-estado="{{Estado}}"
+                                        data-numero="{{Numero}}">Atender</button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document;
+
+
+    d.addEventListener('click', e=>{
+        if(e.target.matches('.btnAtender')){
+            const estado = e.target.dataset.estado;
+            const numero = e.target.dataset.numero;
+            let opciones = ['En proceso', 'Procesado', 'Rechazado']
+            if(estado == 'En proceso'){
+                opciones = ['Procesado', 'Rechazado']
+            }
+            if(estado == "Pendiente" || estado == "En proceso"){
+                Swal.fire({
+                    title: 'Atender solicitud',
+                    html: `
+                        <label for="estado">Estado</label>
+                        <select class="form-control" id="estado" name="estado">
+                            ${opciones.map(opcion => `<option value="${opcion}">${opcion}</option>`)}
+                        </select>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Guardar',
+                    cancelButtonText: 'Cancelar',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        const estado = d.getElementById('estado').value;
+                        return fetch(`/api/canje/atender-solicitud/${numero}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                estado
+                            })
+                        })
+                        .then(data => {
+                            return data.json()
+                        })
+                        .then((data) =>{
+                            if(data.ok){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Solicitud atendida',
+                                    text: 'La solicitud ha sido atendida correctamente',
+                                })
+                                .then(() => {
+                                    location.reload();
+                                })
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'No se pudo atender la solicitud. Por favor, comunicate con soporte',
+                                })
+                            }
+                        })
+                    },
+                })
+            }else{
+                //Alert de que no se puede atender porque se encuentra en estado cerrado
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se puede atender la solicitud porque se encuentra en estado cerrado',
+                })
+            }
+        }
+    })
+
+
+</script>

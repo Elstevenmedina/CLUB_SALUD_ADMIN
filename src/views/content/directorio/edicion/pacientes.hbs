@@ -1,0 +1,206 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item"><a href="/directorio-pacientes">Pacientes</a></li>
+                    <li class="breadcrumb-item active">Ficha</li>
+                </ol>
+            </div>
+            <h4 class="page-title">{{paciente.Nombres}} {{paciente.Apellidos}}</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card ribbon-box">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 ">
+                        <figure class="figure ">
+                            <img src="{{paciente.RutaImagen}}" alt="user-image" width="150px" class="figure-img img-fluid  rounded-circle">
+                            <figcaption class="figure-caption text-center">{{paciente.Nombres}} {{paciente.Apellidos}}</figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="text-center">Información rápida</h4>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <p>Médico asignado: 
+                                    {{#each paciente.Medicos}}
+                                        <span class="text-muted" >
+                                            <a href="/edicion/editar-medico/{{_idMedico}}" class="text-info"> {{Medico}}</a>,
+                                        </span>
+                                    {{/each}}
+                                </p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p>Último cambio de información: <span class="text-muted">{{paciente.Fecha_Modificacion}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-body -->
+        </div> <!-- end card-->
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success ">
+                <h4 class="card-title text-light ">Información personal</h4>
+            </div>
+            <div class="card-body">
+                 <form action="#" method="post" id="form" data-id="{{paciente._id}}">
+                     <div class="row">
+                         <div class="col-sm-12" id="insertError">
+
+                         </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="Nombres">Nombres y apellidos</label>
+                                <input type="text" name="Nombres" id="Nombres" value="{{paciente.Nombres}}" placeholder="Introduzca nombres del personal" class="form-control">
+                            </div>
+                        </div>
+                          <div class="col-lg-4">
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label for="TipoDocumento">Tipo de documento</label>
+                                        <select name="TipoDocumento" id="TipoDocumento" class="form-control">
+                                            <option value="{{paciente.TipoDocumento}}" selected>{{paciente.TipoDocumento}}</option>
+                                            {{#each tipoDocumento}}
+                                                <option value="{{Nombre}}">{{Nombre}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="Documento">Documento / Pasaporte</label>
+                                <input type="number" name="Documento" id="Documento" value="{{paciente.Documento}}" placeholder="Introduzca la cédula del personal" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="FechaNacimiento">Fecha de nacimiento</label>
+                                <input type="date" name="FechaNacimiento" id="FechaNacimiento" class="form-control" value="{{paciente.FechaNacimiento}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Telefono">Teléfono <span class="text-muted">(Whataspp)</span></label>
+                                <input type="text" name="Telefono" id="Telefono" class="form-control" value="{{paciente.Telefono}}" placeholder="Introduzca el teléfono del paciente">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Medico">Médico</label>
+                                <select name="Medico" id="Medico" class="form-control select2-multiple" data-toggle="select2" multiple="multiple" data-placeholder="Seleccione medicos ...">
+                                    {{#each paciente.Medicos}}
+                                        <option value="{{_idMedico}}" selected>{{Medico}}</option>
+                                    {{/each}}
+                                    {{#each medicos}}
+                                        <option value="{{_id}}">{{Nombres}} {{Apellidos}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" name="Direccion" id="Direccion" value="{{paciente.Direccion}}" placeholder="Introduzca dirección del personal" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="TipoFactura">Tipo de factura</label>
+                                <select name="TipoFactura" id="TipoFactura" class="form-control select2" data-toggle="select2">
+                                    <option value="{{paciente.TipoFactura}}" selected>{{paciente.TipoFactura}}</option>
+                                    <option value="{{tipoFactura}}">{{tipoFactura}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="Correo">Correo electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{paciente.Email}}" placeholder="Introduzca correo electrónico del personal"  autocomplete="username">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label for="Nota">Notas sobre el paciente <span class="text-muted">(Opcional)</span> </label>
+                                <textarea name="Nota" id="Nota" cols="30" rows="3" class="form-control">{{paciente.Nota}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-end">
+                            <button class="btn btn-primary" id="btnSubmit">Actualizar datos</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h4 class="card-tittle text-light">Historial de Exámenes</h4>
+            </div>
+            <div class="card-body">
+                <table id="selection-datatable" class="table table-striped dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Puntos totales</th>
+                            <th>Puntos netos</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each examenes}}
+                            <tr>
+                                <td><a href="#" class="text-info examen">{{Numero}}</a></td>
+                                <td>{{Fecha}}</td>
+                                <td>{{Estado}}</td>
+                                <td>{{PuntosTotales}}</td>
+                                <td>{{PuntosNetos}}</td>
+                                {{#if disabled}}
+                                    <td>
+                                        <a class="btn btn-outline-danger" href="javascript:void(0)">
+                                            Sin resultados
+                                        </a>
+                                    </td>
+                                    {{else}}
+                                    <td>
+                                        <a  class="btn btn-outline-info" href="/ver-resultados/{{_id}}">
+                                            <i class="mdi mdi-eye"></i> Ver
+                                        </a>
+                                    </td>
+                                {{/if}}
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/admin/edicion/pacientes.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/info-examenes2.js"></script>

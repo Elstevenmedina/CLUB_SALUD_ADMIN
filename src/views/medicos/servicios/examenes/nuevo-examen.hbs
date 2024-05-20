@@ -1,0 +1,314 @@
+<style>
+    .labelCkeck:hover{
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    .selected {
+        color: rgb(78, 58, 191);
+    }
+    .filtro {
+        display: none;
+        transition: opacity 1s ease-out;
+        opacity: 0;
+    }
+    .sweet_loader {
+        width: 140px;
+        height: 140px;
+        margin: 0 auto;
+        animation-duration: 0.5s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-name: ro;
+        transform-origin: 50% 50%;
+        transform: rotate(0) translate(0,0);
+    }
+    @keyframes ro {
+        100% {
+            transform: rotate(-360deg) translate(0,0);
+        }
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Nueva solicitud</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Nueva solicitud</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-3">
+                                            <label for="Paciente">Paciente</label>
+                                            <input type="text" name="Paciente" id="Paciente" class="form-control" placeholder="Introduzca el primer nombre y apellido del apciente">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="Cedula">Cédula</label>
+                                            <input type="text" name="Cedula" id="Cedula" class="form-control" placeholder="Introduzca la cédula del paciente">
+                                        </div>
+                                    </div>    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h5>Análisis</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" 
+                                        data-bs-target="#home" type="button" role="tab" data-nombre="Tipo examenes"
+                                        aria-controls="home" aria-selected="true">Por tipo de examenes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" 
+                                        type="button" role="tab" aria-controls="profile" data-nombre="Especialidades" aria-selected="false">Por especialidades</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="app-search dropdown">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Buscar examen..." id="search">
+                                                        <span class="mdi mdi-magnify search-icon"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Examenes-->
+                                            <div class="col-sm-12" id="dataExamenes">
+                                                <div class="row">
+                                                    {{#each dataExamenes}}
+                                                    <div class="col-sm-6 my-2">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h4 class="text-center titulosExamenes"><u>{{Tipo}}</u> </h4>
+                                                                <div class="form-check-group">
+                                                                    {{#each Examenes}}
+                                                                        {{#if dataTipos}}
+                                                                            <div class="form-check mt-2">
+                                                                                <label class="form-check-label labelCkeck examenes " for="{{_id}}" >{{Nombre}}</label>
+                                                                                <span class="text-muted text-right" style="font-size: 13px; display:none" >({{Puntos}}pts) :</span>
+                                                                            </div>
+                                                                            <div class="form-check-inline">
+                                                                                <input class="form-check-input checkExamen checkExamenInto" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" data-subTipo="{{SubTipo1}}"
+                                                                                type="checkbox" value="" id="{{_id}}{{SubTipo1}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                <label class="form-check-label examenes" data-name="{{Nombre}}" data-tipo="{{Tipo}}" for="{{_id}}{{SubTipo1}}">{{SubTipo1}} :</label>
+                                                                                <input class="form-check-input checkExamen checkExamenInto"data-cantidadmaxima="{{CantidadMaxima}}"  data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" type="checkbox" value="" id="{{_id}}{{SubTipo2}}"
+                                                                                data-subTipo="{{SubTipo2}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                <label class="form-check-label examenes" for="{{_id}}{{SubTipo2}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}">{{SubTipo2}} :</label>
+                                                                                <input class="form-check-input checkExamen checkExamenInto" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" type="checkbox" value="" id="{{_id}}{{SubTipo3}}"
+                                                                                data-subTipo="{{SubTipo3}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                <label class="form-check-label examenes" for="{{_id}}{{SubTipo3}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}">{{SubTipo3}} :</label>
+                                                                                <hr class="bg-dark w-100">
+                                                                            </div>
+                                                                            {{else}}
+                                                                                {{#if agregado}}
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input checkExamen labelCkeck" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" disabled type="checkbox" value="" id="{{_id}}">
+                                                                                        <label class="form-check-label labelCkeck examenes " style="color: rgb(0, 0, 0); !important" for="{{_id}}">{{Nombre}} :</label>
+                                                                                        <span class="text-muted text-right" style="font-size: 13px; display:none">({{Puntos}}pts)</span>
+                                                                                        <div class="row">
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="text" data-name="{{Nombre}}" data-cantidadmaxima="{{CantidadMaxima}}" data-tipo="{{Tipo}}" class="form-control labelCkeck checkExamen checExamenText" 
+                                                                                                data-puntos="{{Puntos}}" data-id="{{_id}}" data-unidad="{{AgregadoPosterior}}"
+                                                                                                placeholder="Introduzca solicitud" style="border:none; border-bottom: 1px solid #1890ff; padding: 5px 10px; outline: none;"> 
+                                                                                            </div>
+                                                                                            <div class="col-sm-4 mt-2">
+                                                                                                <p>{{AgregadoPosterior}}</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    {{else}}
+                                                                                    <div class="form-check">
+                                                                                        <input class="form-check-input checkExamen labelCkeck" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" data-puntos="{{Puntos}}" type="checkbox" value="" id="{{_id}}">
+                                                                                        <label class="form-check-label labelCkeck examenes " for="{{_id}}">{{Nombre}}</label>
+                                                                                        <span class="text-muted text-right" style="font-size: 13px; display:none">({{Puntos}}pts)</span>
+                                                                                    </div>
+                                                                                {{/if}}
+                                                                        {{/if}}
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <h3>Perfiles</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    {{#each dataExamenesPerfiles}}
+                                                    <div class="col-sm-6 my-2">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <input class="form-check-input checkExamen labelCkeck" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" 
+                                                                    data-name="{{Perfil}}" data-tipo="{{Tipo}}" data-puntos="{{Puntos}}" 
+                                                                    type="checkbox" value="" id="{{_id}}">
+                                                                <label class="form-check-label labelCkeck examenes " for="{{_id}}">{{Perfil}} <span class="text-muted" style="display:none">({{Puntos}} pts)</span> </label>
+                                                                <div class="form-check-group">
+                                                                    {{#each Examenes}}
+                                                                        <div class="">
+                                                                            <p class="" for="{{_id}}">{{Nombre}}</p>
+                                                                        </div>
+                                                                    {{/each}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{/each}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="app-search dropdown">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Buscar examen..." id="search">
+                                                        <span class="mdi mdi-magnify search-icon"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Examenes-->
+                                            <div class="col-sm-12" id="dataExamenes">
+                                                <div class="row accordion" id="accordionExample">
+                                                    <div class="col-sm-12 my-2 card mb"></div>
+                                                    
+                                                    <div class="accordion" id="accordionExample">
+                                                        <div class="card my-2 row">
+                                                            {{#each dataExamenes}}
+                                                                <div class="card-header bg-light" id="{{orden}}">
+                                                                    <h5 class="m-0">
+                                                                        <a class="custom-accordion-title d-block pt-2 pb-2"
+                                                                            data-bs-toggle="collapse" href="#collapse{{orden}}"
+                                                                            aria-expanded="true" aria-controls="collapse{{orden}}">
+                                                                                <h4 class="text-center titulosExamenes"><u>{{Tipo}}</u> </h4>
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <hr>
+                                                                <div id="collapse{{orden}}" class="collapse"
+                                                                    aria-labelledby="{{orden}}" data-bs-parent="#accordionExample">
+                                                                    <div class="card-body">
+                                                                        {{#each Examenes}}
+                                                                            {{#if dataTipos}}
+                                                                                <div class="form-check mt-2">
+                                                                                    <label class="form-check-label labelCkeck examenes " for="{{_id}}" >{{Nombre}}</label>
+                                                                                    <span class="text-muted text-right" style="font-size: 13px; display:none" >({{Puntos}}pts) :</span>
+                                                                                </div>
+                                                                                <div class="form-check-inline">
+                                                                                    <input class="form-check-input checkExamen checkExamenInto" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" data-subTipo="{{SubTipo1}}"
+                                                                                    type="checkbox" value="" id="{{_id}}{{SubTipo1}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                    <label class="form-check-label examenes" data-name="{{Nombre}}" data-tipo="{{Tipo}}" for="{{_id}}{{SubTipo1}}">{{SubTipo1}} :</label>
+                                                                                    <input class="form-check-input checkExamen checkExamenInto" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" type="checkbox" value="" id="{{_id}}{{SubTipo2}}"
+                                                                                    data-subTipo="{{SubTipo2}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                    <label class="form-check-label examenes" for="{{_id}}{{SubTipo2}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}">{{SubTipo2}} :</label>
+                                                                                    <input class="form-check-input checkExamen checkExamenInto" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" type="checkbox" value="" id="{{_id}}{{SubTipo3}}"
+                                                                                    data-subTipo="{{SubTipo3}}" data-id="{{_id}}" data-puntos="{{Puntos}}">
+                                                                                    <label class="form-check-label examenes" for="{{_id}}{{SubTipo3}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}">{{SubTipo3}} :</label>
+                                                                                    <hr class="bg-dark w-100">
+                                                                                </div>
+                                                                                {{else}}
+                                                                                    {{#if agregado}}
+                                                                                        <div class="form-check">
+                                                                                            <input class="form-check-input checkExamen labelCkeck" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" disabled type="checkbox" value="" id="{{_id}}">
+                                                                                            <label class="form-check-label labelCkeck examenes " style="color: rgb(0, 0, 0); !important" for="{{_id}}">{{Nombre}} :</label>
+                                                                                            <span class="text-muted text-right" style="font-size: 13px; display:none">({{Puntos}}pts)</span>
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-8">
+                                                                                                    <input type="text" data-name="{{Nombre}}" data-cantidadmaxima="{{CantidadMaxima}}" data-tipo="{{Tipo}}" class="form-control labelCkeck checkExamen checExamenText" 
+                                                                                                    data-puntos="{{Puntos}}" data-id="{{_id}}" data-unidad="{{AgregadoPosterior}}"
+                                                                                                    placeholder="Introduzca solicitud" style="border:none; border-bottom: 1px solid #1890ff; padding: 5px 10px; outline: none;"> 
+                                                                                                </div>
+                                                                                                <div class="col-sm-4 mt-2">
+                                                                                                    <p>{{AgregadoPosterior}}</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        {{else}}
+                                                                                        <div class="form-check">
+                                                                                            <input class="form-check-input checkExamen labelCkeck" data-cantidadmaxima="{{CantidadMaxima}}" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" data-puntos="{{Puntos}}" type="checkbox" value="" id="{{_id}}">
+                                                                                            <label class="form-check-label labelCkeck examenes " for="{{_id}}">{{Nombre}}</label>
+                                                                                            <span class="text-muted text-right" style="font-size: 13px; display:none">({{Puntos}}pts)</span>
+                                                                                        </div>
+                                                                                    {{/if}}
+                                                                            {{/if}}
+                                                                        {{/each}}
+                                                                    </div>
+                                                                </div>
+                                                            {{/each}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body" data-simplebar>
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h3>Resumen</h3>
+                            </div>
+                            <div class="col-sm-12 my-2">
+                                <p>Cantidad de análisis:</p>
+                                <p class="text-info" id="cantidadExamenes"></p>
+                            </div>
+                            <div class="col-sm-12 my-2" style="display:none">
+                                <p>Puntos totales:</p>
+                                <p class="text-info" id="puntosGenerados"></p>
+                            </div>
+                            <div class="col-sm-12 my-2" style="display:none">
+                                <p>Puntos obtenidos:</p>
+                                <p class="text-info" id="puntosObtenidos"></p>
+                            </div>
+                            <div class="col-sm-12 my-2" >
+                                <p>Observación / Peticiones adicionales:</p>
+                                <textarea name="" id="Observacion" cols="30" rows="2" class="form-control labelCkeck" 
+                                placeholder="Introduzca observación o petición adicional"
+                                style="border:none; border-bottom: 1px solid #1890ff; padding: 5px 10px; outline: none;"></textarea>
+                            </div>
+                            <div class="col-sm-12 mt-2">
+                                <button type="button" class="btn btn-success w-100" id="btnGuardar">Generar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/nuevo-examen-doctor.js"></script>

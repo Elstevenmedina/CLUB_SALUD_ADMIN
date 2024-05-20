@@ -1,0 +1,79 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-directorios">Directorio</a></li>
+                    <li class="breadcrumb-item active">Canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Directorio de canjes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Puntos</th>
+                                <th>Descripción</th>
+                                <th>Activo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each tiposCanjes}}                            
+                                <tr>
+                                    <td><a href="/edicion/editar-canje/{{_id}}" class="text-info" >{{Nombre}}</a></td>
+                                    <td>{{Puntos}}</td>
+                                    <td>{{Descripcion}}</td>
+                                    <td>
+                                        <input type="checkbox" id="activo" {{checked}} data-id="{{_id}}" data-switch="info"/>
+                                        <label for="activo" data-on-label="Si" data-off-label="No"></label>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const d = document,
+    $activo = d.querySelectorAll('#activo');
+
+    d.addEventListener('change', e =>{
+        if(e.target.matches('#activo')){
+            let valor 
+            if(e.target.checked){
+                valor = true
+            }else{
+                valor = false
+            }
+
+            fetch('/canje/cambio-estado', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: e.target.dataset.id,
+                    activo: valor
+                })
+            })
+            .then((data) =>{
+                return data.json()
+            })
+            .then((data) =>{
+
+            })
+
+        }
+    })
+    
+</script>

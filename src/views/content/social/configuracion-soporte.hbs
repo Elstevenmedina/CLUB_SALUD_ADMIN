@@ -1,0 +1,324 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Red</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Soporte</a></li>
+                    <li class="breadcrumb-item active">Configuración</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Configuración del soporte</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Nueva categoría</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12 " id="insertError"></div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <label for="Categoria">Categoría</label>
+                                <select name="Categoria" id="Categoria" class="form-control select2" data-toggle="select2">
+                                    <option value="0">--Seleccione una categoría--</option>
+                                    {{#each categorias}}
+                                        <option value="{{Categoria}}">{{Categoria}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-2 mt-2">
+                                <button class="btn btn-outline-info mt-1 w-100" id="btnCategoria">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <label for="Subcategoria">Subcategoría</label>
+                        <input type="text" name="Subcategoria" id="Subcategoria" class="form-control" placeholder="Introduzca una subcategoría">
+                    </div>
+                    <div class="col-sm-2 mt-2">
+                        <button class="btn btn-success mt-1 w-100" id="btnAgregar">Agregar</button>
+                    </div>
+                    <div class="col-12 mt-4">
+                        <div class="table-responsive">
+                            <table class="table table-dark">
+                                <thead>
+                                    <tr>
+                                        <td>Categoría</td>
+                                        <td>Subcategoría</td>
+                                        <td>Eliminar</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+
+                                </tbody>    
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2 text-end">
+                        <button class="btn btn-info" id="btnGuardar">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{#each Datasubcategorias}}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{Categoria}}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>Subcategoría</td>
+                                    <td>Editar</td>
+                                    <td>Eliminar</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each Subcategorias}}
+                                    <tr>
+                                        <td>{{Subcategoria}}</td>
+                                        <td><button class="btn btn sm btn-outline-info" data-tipo="editar" data-_id="{{_id}}">Editar</button></td>
+                                        <td><button class="btn btn-sm btn-outline-danger" data-tipo="eliminar" data-_id="{{_id}}">Eliminar</button></td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    $Categoria = d.getElementById('Categoria'),
+    $Subcategoria = d.getElementById('Subcategoria'),
+    $btnAgregar = d.getElementById('btnAgregar'),
+    $insertError = d.getElementById('insertError'),
+    $tbody = d.getElementById('tbody'),
+    $btnGuardar = d.getElementById('btnGuardar'),
+    $btnCategoria = d.getElementById('btnCategoria');
+
+    let subcategorias = []
+
+    d.addEventListener('click', e=>{
+        console.log(e.target)
+        if(e.target == $btnCategoria){
+            Swal.fire({
+                title: 'Nueva categoría',
+                html: `
+                    <input
+                    type="text"
+                    placeholder="Introduzca categoría"
+                    class="swal2-input"
+                    id="nuevaCategoria" required>`,
+                showCancelButton: true,
+                confirmButtonText: 'Registrar',
+                cancelButtonText:   'Cancelar'
+                
+            }).then((data) =>{
+                if(data.isConfirmed){
+                    if(d.getElementById('nuevaCategoria').value == 0 || !d.getElementById('nuevaCategoria').value || d.getElementById('nuevaCategoria').value== ""){
+                        $insertError.innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                                <i class="dripicons-wrong me-2"></i>Debe introducir una categoría.
+                            </div>
+                        `
+                    }else{
+                        let dataEnvio = {
+                            Categoria : d.getElementById('nuevaCategoria').value
+                        }
+                        console.log(dataEnvio)
+                        $insertError.innerHTML = ""
+                        fetch('/registrar-nueva-categoria', {
+                            method: 'POST',
+                            body: JSON.stringify(dataEnvio),
+                            headers:{
+                                'content-type':'application/json'
+                            }
+                        }).then((data) =>{
+                            return data.json()
+                        }).then((data) =>{
+                            let options = `<option value="0">--Seleccione una categoría--</option>`
+                            data.forEach((item)=> {
+                                options += `<option value="${item.Categoria}">${item.Categoria}</option>`
+                            })
+                            $Categoria.innerHTML = options
+                        })
+                    }
+                }
+            })
+        }
+        if(e.target == $btnAgregar){
+            let errors = 0
+            if($Subcategoria.value == 0 || !$Subcategoria.value || $Subcategoria.value == ""){
+                 $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Debe introducir una subcategoría.
+                    </div>
+                `
+                errors++
+            }
+            if($Categoria.value == 0 || !$Categoria.value || $Categoria.value == ""){
+                 $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Debe introducir una categoría.
+                    </div>
+                `
+                errors++
+            }else{
+                let validacion = subcategorias.find((data) => data == $Subcategoria.value)
+                if(validacion){
+                    $insertError.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            <i class="dripicons-wrong me-2"></i>La subcategoria ya se encuentra en la lista.
+                        </div>
+                    `
+                }else{
+                    $insertError.innerHTML = ""
+                    let tr = `
+                        <tr>
+                            <td>${$Categoria.value}</td>
+                            <td>${$Subcategoria.value}</td>
+                            <td><button class="btn btn-danger">-</button></td>
+                        </tr>
+                    `
+
+                    $tbody.innerHTML += tr
+                    $Subcategoria.value = ""
+                    $Categoria.setAttribute('disabled','')
+                }   
+            }
+        }
+        if(e.target.textContent == "-"){
+            let linea = e.target.parentElement.parentElement
+            subcategorias = subcategorias.filter((data) => data != linea.children[1].textContent)
+            $tbody.removeChild(linea)
+            if($tbody.children.length == 0){
+                $Categoria.removeAttribute('disabled')
+            }
+        }
+        if(e.target == $btnGuardar){
+            if($tbody.children.length == 0){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Debe agregar subcategorías a la lista para poder guardar.
+                    </div>
+                `
+            }else{
+                $insertError.innerHTML = ""
+
+                let dataSubcategorias = []
+                
+                for(i=0; i< $tbody.children.length; i++){
+                    dataSubcategorias = [...dataSubcategorias, $tbody.children[i].children[1].textContent]
+                }
+                let dataEnvio = {
+                    Subcategorias: dataSubcategorias,
+                    Categoria : $tbody.children[0].children[0].textContent
+                } 
+                fetch('/guardar-subcategoria', {
+                    method: 'POST',
+                    body: JSON.stringify(dataEnvio),
+                    headers: {
+                        'content-type':'application/json'
+                    }
+                }).then((data) =>{
+                    return data.json()
+                }).then((data) =>{
+                    $insertError.innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                        <i class="dripicons-checkmark me-2"></i>Subcategorías registradas correctamente.
+                    </div>
+                    `
+                    $tbody.innerHTML = ""
+                    $("#Categoria").select2("val", "0");
+                    $Categoria.removeAttribute('disabled')
+                })
+            }
+        }
+        if(e.target.textContent == "Editar" && e.target.dataset.tipo == "editar"){
+            let _id = e.target.dataset._id
+            let linea = e.target.parentElement.parentElement
+            linea.children[0].innerHTML = `<input class="form-control" value="${linea.children[0].textContent}"/>`
+            linea.children[1].innerHTML = `<button class="btn btn-outline-success" data-_id="${_id}">Actualizar</button>`
+        }
+        if(e.target.textContent == "Eliminar" && e.target.dataset.tipo == "eliminar"){
+            let _id = e.target.dataset._id
+            let linea  = e.target.parentElement.parentElement
+            let tbody  = e.target.parentElement.parentElement.parentElement
+             let dataSubcategorias = []
+            for(i=0; i< tbody.children.length; i++){
+                 let subcategoriaLinea = tbody.children[i].children[0].textContent
+                dataSubcategorias = [...dataSubcategorias, subcategoriaLinea]
+            }
+            let dataEnvio = {
+                Subcategorias: dataSubcategorias.filter((data) => data != linea.children[0].textContent)
+            }
+            
+            Swal.fire({
+                title: '¿Está seguro/a que quieres elimnar la subcategoría?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    fetch(`/eliminar-subcategoria/${_id}`,{
+                        method: 'PUT',
+                        body: JSON.stringify(dataEnvio),
+                        headers: {
+                            'content-type': 'application/json'
+                        }
+                    }).then((data) =>{
+                        tbody.removeChild(linea)
+                    })
+                }
+            })
+        }
+        if(e.target.textContent == "Actualizar"){
+            let _id = e.target.dataset._id
+            let linea = e.target.parentElement.parentElement
+            let tbody = e.target.parentElement.parentElement.parentElement
+            let dataSubcategorias = []
+            for(i=0; i< tbody.children.length; i++){
+                let subcategoriaLinea = tbody.children[i].children[0].firstElementChild 
+                    ? tbody.children[i].children[0].firstElementChild.value 
+                    : tbody.children[i].children[0].textContent 
+                
+                dataSubcategorias = [...dataSubcategorias, subcategoriaLinea]
+            }
+
+            let dataEnvio = {
+                Subcategorias: dataSubcategorias
+            }   
+
+            fetch(`/actualizar-subcategoria/${_id}`,{
+                method: 'POST',
+                body: JSON.stringify(dataEnvio),
+                headers: {
+                    'content-type':'application/json'
+                }
+            }).then((data) =>{
+                return data.json()
+            }).then((data) =>{
+                linea.children[0].innerHTML = `${linea.children[0].firstElementChild.value}`
+                linea.children[1].innerHTML = `<button class="btn btn-outline-info" data-_id="${_id}">Editar</button>`
+            })
+        }   
+    })
+
+</script>

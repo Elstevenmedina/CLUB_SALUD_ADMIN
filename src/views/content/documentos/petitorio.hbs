@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petitorio</title>
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app-modern.css" rel="stylesheet" type="text/css" id="app-style" />
+    <link href="/assets/css/vendor/dataTables.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/vendor/responsive.bootstrap5.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/svg-with-js.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/fullcalendar.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row bg-light" >
+            <div class="col-sm-12 text-center">
+                <img src="/images/business/logo.png" width="200px" alt="">
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-12 text-center">
+                <h2>Petitorio</h2>
+            </div>
+        </div>
+            <div class="row">
+                {{#each dataExamenes}}
+                <div class="col-sm-6 my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-center titulosExamenes"><u>{{Tipo}}</u> </h4>
+                            <div class="form-check-group">
+                                {{#each Examenes}}
+                                    {{#if dataTipos}}
+                                        <div class="form-check">
+                                            <label class="form-check-label labelCkeck examenes {{clase}}" for="{{_id}}" style="font-size:15px">{{Nombre}}</label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <input class="form-check-input checkExamen checkExamenInto" >
+                                            <label class="form-check-label examenes"  style="font-size:15px">{{SubTipo1}} :</label>
+                                            <input class="form-check-input checkExamen checkExamenInto" >
+                                            <label class="form-check-label examenes"  style="font-size:15px">{{SubTipo2}} :</label>
+                                            <input class="form-check-input checkExamen checkExamenInto">{{SubTipo3}} :</label>
+                                            <hr class="bg-dark w-100">
+                                        </div>
+                                        {{else}}
+                                            {{#if agregado}}
+                                                <div class="form-check">
+                                                    <input class="form-check-input checkExamen labelCkeck">
+                                                    <label class="form-check-label labelCkeck examenes {{clase}}" style="color: black; !important; font-size:15px" >{{Nombre}} :</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <input type="text" data-name="{{Nombre}}" data-tipo="{{Tipo}}" class="form-control labelCkeck checkExamen checExamenText" 
+                                                            data-puntos="{{Puntos}}" data-id="{{_id}}" data-unidad="{{AgregadoPosterior}}"
+                                                            placeholder="Introduzca solicitud" style="border:none; border-bottom: 1px solid #1890ff; padding: 5px 10px; outline: none;"> 
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <p>{{AgregadoPosterior}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{else}}
+                                                <div class="form-check">
+                                                    <input class="form-check-input checkExamen labelCkeck" data-comisiones="{{Comisiones}}" data-name="{{Nombre}}" data-tipo="{{Tipo}}" data-puntos="{{Puntos}}" type="checkbox" value="" id="{{_id}}">
+                                                    <label class="form-check-label labelCkeck examenes {{clase}}" for="{{_id}}" style="font-size:15px">{{Nombre}}</label>
+                                                </div>
+                                            {{/if}}
+                                    {{/if}}
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                 <div class="row">
+                    <div class="col-sm-12 my-2 text-center">
+                        <hr>
+                        <h3>Por Perfiles</h3>
+                    </div>
+                    {{#each dataExamenesPerfiles}}
+                    <div class="col-sm-6 my-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <input class="form-check-input checkExamen labelCkeck" data-comisiones="{{Comisiones}}" 
+                                    data-name="{{Perfil}}" data-tipo="{{Tipo}}" data-puntos="{{Puntos}}" 
+                                    type="checkbox" value="" id="{{_id}}">
+                                <label class="form-check-label labelCkeck examenes {{clase}}" for="{{_id}}">{{Perfil}} <span class="text-muted" style="display:none">({{Puntos}} pts)</span> </label>
+                                <div class="form-check-group">
+                                    {{#each Examenes}}
+                                        <div class="">
+                                            <p class="{{clase}}" for="{{_id}}">{{Nombre}}</p>
+                                        </div>
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            
+        <div class="">
+            <p>Gracias por formar parte de la familia <a href="https://app.clubsalud.com/" class="text-success">Club salud</a> </p>
+        </div>
+    </div>
+        <script src="/js/main.js"></script>
+        <script src="/assets/js/vendor.min.js"></script>
+        <script src="/assets/js/app.min.js"></script>
+        <script src="/assets/js/vendor/jquery.dataTables.min.js"></script>
+        <script src="/assets/js/vendor/dataTables.bootstrap5.js"></script>
+        <script src="/assets/js/vendor/dataTables.responsive.min.js"></script>
+        <script src="/assets/js/vendor/responsive.bootstrap5.min.js"></script>
+        <script src="/assets/js/vendor/chart.min.js"></script>
+        <!-- third party js ends -->
+        <!-- demo app -->
+        <script src="/assets/js/pages/dashboard-projects.js"></script>
+        <!-- Datatable Init js -->
+        <script src="/assets/js/pages/demo.datatable-init.js"></script>
+        <script src="/js/admin/tema.js"></script>
+        <!-- SOCKET IO  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.print();
+    });
+</script>
+</body>
+</html>

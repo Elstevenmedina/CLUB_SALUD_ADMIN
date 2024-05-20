@@ -1,0 +1,144 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Red</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Soporte</a></li>
+                    <li class="breadcrumb-item active">Detalle ticket #{{ticket.Numero}}</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Detalle ticket #{{ticket.Numero}}</h4>
+        </div>
+    </div>
+    <div class="col-12" id="insertError"></div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="mb-3 text-center">
+                            <h4>Titulo : {{ticket.Titulo}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-start">
+                            <p>Fecha completa: <span class="text-muted">{{ticket.FechaCompleta}}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-center">
+                            <p>Usuario: <span class="text-muted">{{ticket.Usuario}}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-center">
+                            <p>Tipo de usuario: <span class="text-muted">{{ticket.TipoUsuario}}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-start">
+                            <p>Categoria: <span class="text-muted">{{ticket.Categoria}}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-center">
+                            <p>Subcategoria: <span class="text-muted">{{ticket.Subcategoria}}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="mb-3 text-center">
+                            <p>Estado actual:  <span class="badge badge-{{ticket.Color}}-lighten">{{ticket.Estado}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <textarea class="form-control" cols="30" rows="10" readonly>{{ticket.Descripcion}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-end">
+                        <button class="btn btn-success" id="btnEstado" data-_id="{{ticket._id}}" data-estado="{{ticket.Estado}}">Cambiar estado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    $insertError= d.getElementById('insertError'),
+    $btnEstado = d.getElementById('btnEstado');
+
+
+    $btnEstado.onclick = () =>{
+        let estado = $btnEstado.dataset.estado
+        let _id = $btnEstado.dataset._id
+        if(estado == "Pendiente" || estado == "En proceso"){
+            let opciones = `<option value="0">--Selecione un estado--</option>`
+            if(estado == "Pendiente"){
+                 opciones += `<option value="En proceso">En proceso</option>`
+                opciones += `<option value="Cerrado">Cerrado</option>`
+                opciones += `<option value="Anulado">Anulado</option>`
+            }else{
+                opciones += `<option value="Cerrado">Cerrado</option>`
+                opciones += `<option value="Anulado">Anulado</option>`
+            }
+             Swal.fire({
+                title: 'Nueva categoría',
+                html: `<select class="swal2-input select2" data-toggle="select2" id="nuevoEstado" name="nuevoEstado">
+                    ${opciones}
+                </select>`,
+                showCancelButton: true,
+                confirmButtonText: 'Cambiar',
+                cancelButtonText:   'Cancelar'
+                
+            }).then((data) =>{
+                if(data.isConfirmed){
+                    if(d.getElementById('nuevoEstado').value == 0 || !d.getElementById('nuevoEstado').value || d.getElementById('nuevoEstado').value== ""){
+                        $insertError.innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                                <i class="dripicons-wrong me-2"></i>Debe seleccionar un nuevo estado.
+                            </div>
+                        `
+                    }else{
+                        let dataEnvio = {
+                            Estado : d.getElementById('nuevoEstado').value
+                        }
+                        console.log(dataEnvio)
+                        $insertError.innerHTML = ""
+                        fetch(`/cambiar-estado-ticket/${_id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(dataEnvio),
+                            headers:{
+                                'content-type':'application/json'
+                            }
+                        }).then((data) =>{
+                            return data.json()
+                        }).then((data) =>{
+                            location.reload()
+                        })
+                    }
+                }
+            })
+        }
+        if(estado == "Anulado"){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'El estado del ticket es "Anulado" por lo tanto no puede ser modificado',
+            })
+        }
+        if(estado == "Cerrado"){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'El estado del ticket es "Cerrado" por lo tanto no puede ser modificado',
+            })
+        }
+    }
+
+
+
+</script>

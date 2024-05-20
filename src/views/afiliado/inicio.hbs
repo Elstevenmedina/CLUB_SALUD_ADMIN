@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card widget-inline">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card shadow-none m-0">
+                                <div class="card-body text-center">
+                                    <i class="dripicons-blog text-muted" style="font-size: 24px;"></i>
+                                    <h3><span>{{dataExamenes.examenesTotales}}</span></h3>
+                                    <p class="text-muted font-15 mb-0">Examenes totales</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card shadow-none m-0 border-start">
+                                <div class="card-body text-center">
+                                    <i class="dripicons-document text-muted" style="font-size: 24px;"></i>
+                                    <h3><span>{{dataExamenes.examenesAtendidos}}</span></h3>
+                                    <p class="text-muted font-15 mb-0">Examenes atendidos</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card shadow-none m-0 border-start">
+                                <div class="card-body text-center">
+                                    <i class=" dripicons-document-delete text-muted" style="font-size: 24px;"></i>
+                                    <h3><span>{{dataExamenes.examenesRechazados}}</span></h3>
+                                    <p class="text-muted font-15 mb-0">Examenes rechazados</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card shadow-none m-0 border-start">
+                                <div class="card-body text-center">
+                                    <i class="dripicons-document-edit text-muted" style="font-size: 24px;"></i>
+                                    <h3><span>{{dataExamenes.examenesPendientes}}</span> </h3>
+                                    <p class="text-muted font-15 mb-0">Examenes pendientes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end row -->
+                </div>
+            </div> <!-- end card-box-->
+        </div> <!-- end col-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="header-title">
+                            Estado examenes
+                        </h4>
+                    </div>
+                    <div class="my-4 chartjs-chart" style="height: 194px;">
+                        <canvas id="project-status-chart" data-colors="#10c469,#f9c851,#ff5b5b" width="433" height="194" style="display: block; box-sizing: border-box; height: 194px; width: 433px;"></canvas>
+                    </div>
+
+                    <div class="row text-center my-4 py-2">
+                        <div class="col-sm-4 mb-2">
+                            <div class="my-2 my-sm-0">
+                                    <i class="mdi mdi-trending-up text-success mt-3 h3"></i>
+                                <h3 class="fw-normal">
+                                    <span>{{dataExamenes.examenesAtendidos}}</span>
+                                </h3>
+                                <p class="text-muted mb-0">Procesados</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="my-2 my-sm-0">
+                                    <i class="mdi mdi-trending-up text-warning mt-3 h3"></i>
+                                <h3 class="fw-normal">
+                                    <span>{{dataExamenes.examenesPendientes}}</span>
+                                </h3>
+                                <p class="text-muted mb-0">Pendientes</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="my-2 my-sm-0">
+                                    <i class="mdi mdi-trending-up text-danger mt-3 h3"></i>
+                                <h3 class="fw-normal">
+                                    <span>{{dataExamenes.examenesRechazados}}</span>
+                                </h3>
+                                <p class="text-muted mb-0">Rechazadas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

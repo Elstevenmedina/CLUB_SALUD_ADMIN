@@ -1,0 +1,222 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Canje</a></li>
+                    <li class="breadcrumb-item active">Solicitud de canjes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Solicitud de canjes</h4>
+        </div>
+    </div>
+    <div class="col-12 text-end" style="font-size: 40px;">
+        <i class="mdi mdi-piggy-bank" style="color: rgba(0, 128, 0, 0.797)"></i> {{puntosDisponibles}}pts
+    </div>
+    <div class="col-sm-12 my-3">
+        <div class="card">
+            <div class="card-header">
+                <h5>Nueva solicitud</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <label for="tipoCanje">Seleccione el tipo de canje</label>
+                                <select name="tipoCanje" id="tipoCanje" class="form-control  select2" data-toggle="select2">
+                                    <option value="0">--Seleccione el tipo de canje--</option>
+                                    {{#each tiposCanjes}}
+                                        <option value="{{Nombre}}" data-descripcion="{{Descripcion}}" data-puntos="{{Puntos}}">{{Nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-1 mt-2" id="tooltip-container" style="font-size:30px;">
+                                 <a href="#" id="tooltip" data-bs-container="#tooltip-container" 
+                                 data-bs-toggle="tooltip" title="Selecciona un tipo de canje. Una vez seleccionado la información del mismo se mostrará en este botón">
+                                 <i class="dripicons-question"></i>
+                                 </a> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="puntosMinimos">Puntos mínimos  para este canje</label>
+                        <input type="text" class="form-control" id="puntosMinimos" disabled>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="puntosCanjear">Puntos a canjear</label>
+                        <input type="text" class="form-control" data-max="{{puntosDisponibles}}" id="puntosCanjear" placeholder="Puntos a canjear">
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <button class="btn btn-success mt-2 w-100" id="btnEnviar">Enviar solicitud</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Solicitudes en proceso</h5>
+            </div>
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Tipo de canje</th>
+                                <th>Puntos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each solicitudes}}                            
+                                <tr>
+                                    <td>{{Numero}}</td>
+                                    <td>{{FechaCanje}}</td>
+                                    <td>
+                                        <span class="badge badge-{{color}}-lighten text-dark">{{Estado}}</span>
+                                    </td>
+                                    <td>{{TipoCanje}}</td>
+                                    <td>{{PuntosCanjeados}} pts</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    $tipoCanje = d.getElementById('tipoCanje'),
+    $tooltip = d.getElementById('tooltip'),
+    $puntosMinimos = d.getElementById('puntosMinimos'),
+    $btnEnviar = d.getElementById('btnEnviar'),
+    $puntosCanjear = d.getElementById('puntosCanjear');
+
+
+    $tipoCanje.onchange = (e) =>{
+        if(e.target.value == 0){
+            $puntosMinimos.value = "";
+            $tooltip.setAttribute('title', "Selecciona un tipo de canje. Una vez seleccionado la información del mismo se mostrará en este boton");
+            $tooltip.setAttribute('data-bs-original-title', "Selecciona un tipo de canje. Una vez seleccionado la información del mismo se mostrará en este boton");
+        }else{
+            const $this = e.target;
+            const descripcion = $this.options[$this.selectedIndex].dataset.descripcion;
+            const puntos = $this.options[$this.selectedIndex].dataset.puntos;
+            $puntosMinimos.value = puntos;
+            $tooltip.setAttribute('title', descripcion);
+            $tooltip.setAttribute('data-bs-original-title', descripcion);
+        }
+    }
+
+    d.addEventListener('click', e=>{
+        if(e.target == $btnEnviar){
+            if($tipoCanje.value == 0){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes seleccionar un tipo de canje',
+                })
+                return;
+            }
+            else if($puntosCanjear.value == ""){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes ingresar los puntos a canjear',
+                })
+                return;
+            }
+            else if(+$puntosCanjear.value < +$puntosMinimos.value){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Los puntos a canjear deben ser mayor o igual a los Puntos mínimos  para este canje',
+                })
+                return;
+            } else if(+$puntosCanjear.value > +$puntosCanjear.dataset.max){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `Los puntos a canjear no deben ser mayor a los disponibles "${$puntosCanjear.dataset.max}"`,
+                })
+                return;
+            }else{
+                //crear resumen con los datos y sweetalert
+                Swal.fire({
+                    title: 'Resumen de solicitud',
+                    html: `
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>Tipo de canje: <b>${$tipoCanje.options[$tipoCanje.selectedIndex].text}</b></p>
+                            </div>  
+                            <div class="col-sm-12">
+                                <p>Descripción: <b>${$tipoCanje.options[$tipoCanje.selectedIndex].dataset.descripcion}</b></p>
+                            </div>
+                            <div class="col-sm-12">
+                                <p>Puntos a canjear: <b>${$puntosCanjear.value}</b></p>
+                            </div>
+                        <div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Enviar solicitud',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //loading with sweealert
+                        Swal.fire({
+                            title: 'Enviando solicitud',
+                            html: 'Por favor espere...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        })
+                        const data = {
+                            tipoCanje: $tipoCanje.value,
+                            puntosCanjear: $puntosCanjear.value
+                        }
+                        fetch('/nueva-solicitud-canje', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.ok){
+                                Swal.fire(
+                                    'Solicitud enviada',
+                                    'La solicitud de canje se ha enviado correctamente',
+                                    'success'
+                                ).then((data) =>{
+                                    location.reload();
+                                })
+                            }else{
+                                Swal.fire(
+                                    'Error',
+                                    'Ha ocurrido un error al enviar la solicitud',
+                                    'error'
+                                )
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
+    
+
+
+</script>

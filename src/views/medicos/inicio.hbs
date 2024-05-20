@@ -1,0 +1,166 @@
+<style>
+    .widget-icon-success{
+        color: green;
+        font-size: 20px;
+        background-color: rgba(75, 197, 97, 0.1);
+        height: 40px;
+        width: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .widget-icon-danger{
+        color: rgb(224, 19, 19);
+        font-size: 20px;
+        background-color: rgba(255, 82, 82, 0.1);
+        height: 40px;
+        width: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+ 
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4 mt-3">
+           <div class="card widget-flat">
+                <div class="card-body mt-2">
+                    <div class="float-end">
+                        <i class="mdi mdi-archive-arrow-up widget-icon-success"></i>
+                    </div>
+                    <h5 class="text-muted fw-normal mt-0" title="Number of Customers">Puntos disponibles</h5>
+                    <h3 class="mt-3 mb-3" id="PuntosCanjeables">36,254</h3>
+                </div> <!-- end card-body-->
+            </div>
+        </div>
+
+        <div class="col-sm-4 mt-3">
+            <div class="card">
+                <div class="card-body mt-2">
+                    <div class="float-end">
+                        <i class="mdi mdi-archive-arrow-down widget-icon-danger"></i>
+                    </div>
+                    <h5 class="text-muted fw-normal mt-0" title="Number of Customers">Puntos retirados</h5>
+                    <h3 class="mt-3 mb-3" id="PuntosCanjeados">36,254</h3>
+                </div> <!-- end card-body-->
+            </div>
+        </div>
+        <div class="col-sm-4 mt-3">
+            <div class="card ">
+                <div class="card-body">
+                    <h5 class="text-muted fw-normal mt-0" title="Number of Customers">Progreso actual</h5>
+                    <div class="row">
+                        <div class="col-sm-3 col-3 text-center">
+                            <img src="{{dataPuntos.rutaMedalla1}}" width="50px" alt="">
+                            <figcaption class="figure-caption text-center text-dark my-0">{{dataPuntos.nombreMedalla1}}</figcaption>
+                            <figcaption class="figure-caption text-center text-dark my-0"><span class="text-muted"></span></figcaption>
+                        </div>
+                        <div class="col-sm-6 mt-2 col-6">
+                            <div class="progress mt-1" style="height: 1.5rem;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" id="progressbar"
+                                 role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-3 text-center">
+                            <img src="{{dataPuntos.rutaMedalla2}}" width="50px" alt="">
+                            <figcaption class="figure-caption text-center text-dark my-0">{{dataPuntos.nombreMedalla2}}</figcaption>
+                            <figcaption class="figure-caption text-center text-dark my-0"><span class="text-muted"></span></figcaption>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 order-lg-2 order-xl-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="header-title">SOLICITUDES ATENDIDAS RECIENTEMENTE</h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                                {{#each examenes}}
+                                    <tr>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal">{{Paciente}}</h5>
+                                            <span class="text-muted font-13">{{FechaAtencion}}</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal">{{PuntosTotales}}</h5>
+                                            <span class="text-muted font-13">Puntos totales</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 fw-normal">{{PuntosMedico}}</h5>
+                                            <span class="text-muted font-13">Puntos obtenidos</span>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div>
+    </div>
+</div>
+
+<script>
+    const d = document,
+    $PuntosCanjeables = d.getElementById('PuntosCanjeables'),
+    $PuntosCanjeados = d.getElementById('PuntosCanjeados'),
+    $progressbar = d.getElementById('progressbar');
+
+    fetch('/solicitar-datos-puntos-medico',{
+        method:'POST',
+        headers:{
+            'content-type':'application/json'
+        }
+    }).then((res) =>{
+        return res.json()
+    }).then((data) =>{
+        let valorPuntos = data.PuntosObtenidos
+        let recorrido = 0
+        console.log(data)
+        let cargarProgress = setInterval(() => {
+            if((recorrido + 5) > valorPuntos){
+                $progressbar.style.width = (+valorPuntos * +data.factor) + '%';
+                $progressbar.ariaValueNow = valorPuntos
+                $progressbar.textContent = valorPuntos + 'pts'
+                clearInterval(cargarProgress);
+            }else{
+                recorrido += 5
+                $progressbar.style.width = (+recorrido * +data.factor) + '%';
+                $progressbar.ariaValueNow = recorrido
+                $progressbar.textContent = recorrido + 'pts'
+            }
+        }, 150);
+        recorrido = 0
+        let cargarTexto1 = setInterval(() => {
+            if((recorrido + 5) > data.PuntosCanjeables){
+                $PuntosCanjeables.textContent = data.PuntosCanjeables
+                clearInterval(cargarTexto1);
+            }else{
+                recorrido += 5
+                $PuntosCanjeables.textContent = recorrido
+            }
+        }, 150);
+
+        let cargarTexto2 = setInterval(() => {
+            if((recorrido + 5) > data.PuntosCanjeados){
+                $PuntosCanjeados.textContent = data.PuntosCanjeados
+                clearInterval(cargarTexto2);
+            }else{
+                recorrido += 5
+                $PuntosCanjeados.textContent = recorrido
+            }
+        }, 150);
+    })
+
+
+
+</script>

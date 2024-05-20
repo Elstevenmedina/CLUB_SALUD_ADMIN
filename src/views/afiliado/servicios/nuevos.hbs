@@ -1,0 +1,198 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Nuevos</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Nuevos</h4>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha</th>
+                                <th>Paciente</th>
+                                <th>Estado</th>
+                                <th>Servicio</th>
+                                <th>Descripción</th>
+                                <th>Cambiar estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each servicios}}                            
+                                <tr>
+                                    <td>{{Numero}}</td>
+                                    <td>{{Fecha}}</td>
+                                    <td>{{Paciente}}</td>
+                                    <td>{{Estado}}</td>
+                                    <td>{{Servicio}}</td>
+                                    <td>{{Descripcion}}</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm btnEstado" data-id="{{_id}}" data-estado="{{Estado}}">Cambiar estado</button>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const d = document;
+
+
+    d.addEventListener('click', e=>{
+        if(e.target.matches('.btnEstado')){
+            const id = e.target.dataset.id;
+            //Estado:  En proceso, Rechazado, Atendido 
+            const estado = e.target.dataset.estado
+            let opciones = ['En proceso', 'Rechazado', 'Atendido'];
+
+            opciones = opciones.filter(opcion => opcion != e.target.dataset.estado);
+
+            if(estado == "Atendido" || estado == "Rechazado"){
+                // No se puede cambiar el estado, avisar con sweetalert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No se puede cambiar el estado de este servicio',
+                    footer: '<a href>Why do I have this issue?</a>'
+                })
+            } else{
+                Swal.fire({
+                    title: 'Seleccione un estado',
+                    html : `
+                        <div class="">
+                            <div class="col-sm-12 my-2">
+                                <label for="estadoCambiar">Seleccione un estado</label>
+                                <select class="form-control" id="estadoCambiar" name="estadoCambiar">
+                                    <option value="0">--Seleccione un estado--</option>
+                                    ${opciones.map(opcion => `<option value="${opcion}">${opcion}</option>`)}
+                                </select>
+                            </div>
+                            <div class="col-sm-12 my-2 d-none" id="motivoRechazoContainer">
+                                <label for="motivoRechazo">Motivo de rechazo</label>
+                                <input id="motivoRechazo" name="motivoRechazo" class="form-control" placeholder="Introduzca el motivo de rechazo">
+                            </div>
+                            <div class="col-sm-12 my-2 d-none" id="montoFinalContainer">
+                                <label for="montoFinal">Monto</label>
+                                <input type="number" id="montoFinal" name="montoFinal" class="form-control" placeholder="Introduzca el motivo de rechazo">
+                            </div>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Cambiar estado',
+                    cancelButtonText: 'Cancelar',
+                    preConfirm: () => {
+                        const estadoCambiar = d.getElementById('estadoCambiar').value;
+                        const motivoRechazo = d.getElementById('motivoRechazo').value;
+                        const montoFinal = d.getElementById('montoFinal').value;
+
+                        if(estadoCambiar == "Rechazado" && motivoRechazo == ""){
+                            Swal.showValidationMessage(
+                                `Debe introducir un motivo de rechazo`
+                            )
+                        }
+                        if(estadoCambiar == "Atendido" && (montoFinal == "" || +montoFinal <= 0 ) ){
+                            Swal.showValidationMessage(
+                                `Debe introducir un monto final`
+                            )
+                        }
+                        if(estadoCambiar == "0"){
+                            Swal.showValidationMessage(
+                                `Debe seleccionar un estado`
+                            )
+                        }
+
+                        return {estadoCambiar, motivoRechazo, montoFinal}
+                    },                    
+                })
+                .then((data) =>{
+                    if(data.isConfirmed){
+                        let dataEnvio = {
+                            id,
+                            estado: data.value.estadoCambiar,
+                            motivoRechazo : data.value.motivoRechazo,
+                            montoFinal : data.value.montoFinal
+                        }
+
+                        //loading with sweetalert
+
+                        Swal.fire({
+                            title: 'Cambiando estado',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+
+
+                        fetch('/afiliado/servicios/cambiarEstado', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(dataEnvio)
+                        })
+                        .then((data) =>{
+                            return data.json()
+                        })
+                        .then((data) =>{
+                            if(data.ok){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Estado cambiado',
+                                    text: 'El estado se ha cambiado correctamente',
+                                })
+                                .then((data) =>{
+                                    location.reload();
+                                })
+                            }else{
+                                //error con sweetalert
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'No se pudo cambiar el estado',
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+
+        }
+    })
+
+    d.addEventListener('change', e=>{
+        if(e.target.matches('#estadoCambiar')){
+            if(e.target.value == "Rechazado"){
+                d.getElementById('motivoRechazoContainer').classList.remove('d-none');
+                d.getElementById('montoFinalContainer').classList.add('d-none');
+            }
+            else if(e.target.value == "Atendido"){
+                d.getElementById('motivoRechazoContainer').classList.add('d-none');
+                d.getElementById('montoFinalContainer').classList.remove('d-none');
+            }else {
+                d.getElementById('motivoRechazoContainer').classList.add('d-none');
+                d.getElementById('montoFinalContainer').classList.add('d-none');
+            }
+
+        }
+    })
+
+
+
+
+</script>

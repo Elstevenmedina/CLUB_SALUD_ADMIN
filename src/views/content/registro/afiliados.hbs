@@ -1,0 +1,320 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/registro">Registro</a></li>
+                    <li class="breadcrumb-item active">Afiliados</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Registro de Afiliados</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 my-2">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <label for="afiliado">Nombre del Afiliados</label>
+                                <select name="afiliado" id="afiliado" class="form-control select2" data-toggle="select2">
+                                    <option value="0">--Seleccione un afiliado--</option>
+                                    {{#each afiliados}}
+                                        <option value="{{Nombre}}">{{Nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-2 mt-3 col-2">
+                                    <button id="btnRegistrarAfiliado" type="button" class="btn btn-outline-info w-100" >+</button>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <label for="servicio">Servicio</label>
+                                <select name="servicio" id="servicio" class="form-control select2" data-toggle="select2">
+                                    <option value="0">--Seleccione un servicio--</option>
+                                    {{#each servicios}}
+                                        <option value="{{Nombre}}">{{Nombre}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="col-sm-2 mt-3 col-2">
+                                    <button id="btnRegistrarServicio" type="button" class="btn btn-outline-info w-100" >+</button>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <label for="Nombre">Nombres</label>
+                        <input type="text" name="Nombre" id="Nombre" class="form-control" placeholder="Introduzca los nombres y apellidos">
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <label for="Cedula">Documento</label>
+                        <input type="text" name="Cedula" id="Cedula" class="form-control" placeholder="Introduzca la cédula">
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" name="email" id="email" class="form-control" autocomplete="current-password" placeholder="Introduzca el correo electrónico">
+                    </div>
+                    <div class="col-sm-6 my-2">
+                        <label for="emailConfirm">Confirmar el correo electrónico</label>
+                        <input type="email" name="emailConfirm" id="emailConfirm" class="form-control" autocomplete="current-password" placeholder="Confirme el correo electrónico">
+                    </div>
+                    <div class="col-sm-12 mt-4 text-end">
+                        <button class="btn btn-success" id="btnRegistrar">Registrar afiliado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+        const d = document,
+        $insertError = d.getElementById('insertError'),
+        $afiliado = d.getElementById('afiliado'),
+        $servicio = d.getElementById('servicio'),
+        $Nombre = d.getElementById('Nombre'),
+        $Cedula = d.getElementById('Cedula'),
+        $email =  d.getElementById('email'), 
+        $emailConfirm =  d.getElementById('emailConfirm'), 
+        $btnRegistrar =  d.getElementById('btnRegistrar'); 
+
+        d.addEventListener('click', e => {
+        if (e.target.id === 'btnRegistrarAfiliado') {
+            Swal.fire({
+                title: 'Nuevo afiliado',
+                html: `<input type="text" id="Tipo" name="Tipo" class="swal2-input" placeholder="Tipo">`,
+                confirmButtonText: 'Registrar',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const Tipo = Swal.getPopup().querySelector('#Tipo').value
+                    if (!Tipo) {
+                        Swal.showValidationMessage(`Por favor introduzca el nombre del afiliado`)
+                    }
+                    return { Nombre: Tipo, }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/nuevo-afiliado', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(result.value)
+                    }).then((res) => {
+                        return res.json()
+                    }).then((data) => {
+                        if (data.success) {
+                            $afiliado.innerHTML = `<option value="0" selected>--Seleccione un afiliado--</option>`
+                            data.Tipos.forEach(tipo => {
+                                const $option = d.createElement('option');
+                                $option.value = tipo.Nombre;
+                                $option.innerHTML = tipo.Nombre;
+                                $afiliado.appendChild($option);
+                            })
+                            $insertError.innerHTML = `
+                            <div class="alert alert-success" role="alert">
+                                <i class="dripicons-success me-2"></i> Afiliado registrado correctamente.
+                            </div>
+                         `
+                            setTimeout(() => {
+                                $insertError.innerHTML = ""
+                            }, 10000);
+                        } else {
+                            $insertError.innerHTML = `
+                                <div class="alert alert-danger" role="alert">
+                                    <i class="dripicons-wrong me-2"></i> El afiliado ya se encuentra registrado.
+                                </div>
+                            `
+                            setTimeout(() => {
+                                $insertError.innerHTML = ""
+                            }, 10000);
+                        }
+                    })
+                }
+            })
+        }
+        if (e.target.id === 'btnRegistrarServicio') {
+            Swal.fire({
+                title: 'Nuevo servicio',
+                html: `<input type="text" id="nuevaEspecialidad" name="nuevaEspecialidad" class="swal2-input" placeholder="Especialidad">`,
+                confirmButtonText: 'Registrar',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const nuevaEspecialidad = Swal.getPopup().querySelector('#nuevaEspecialidad').value
+                    if (!nuevaEspecialidad) {
+                        Swal.showValidationMessage(`Por favor introduzca el servicio`)
+                    }
+                    return { Nombre: nuevaEspecialidad, }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/nuevo-servicio', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(result.value)
+                    }).then((res) => {
+                        return res.json()
+                    }).then((data) => {
+                        if (data.success) {
+                            $servicio.innerHTML = `<option value="0" selected>--Seleccione un servicio--</option>`
+                            data.Tipos.forEach(tipo => {
+                                const $option = d.createElement('option');
+                                $option.value = tipo.Nombre;
+                                $option.innerHTML = tipo.Nombre;
+                                $servicio.appendChild($option);
+                            })
+                            $insertError.innerHTML = `
+                                <div class="alert alert-success" role="alert">
+                                    <i class="dripicons-success me-2"></i>Servicio registrado correctamente.
+                                </div>
+                            `
+                            setTimeout(() => {
+                                $insertError.innerHTML = ""
+                            }, 10000);
+                        } else {
+                            $insertError.innerHTML = `
+                        <div class="alert alert-danger" role="alert">
+                            <i class="dripicons-wrong me-2"></i>El servicio ya se encuentra registrado.
+                        </div>
+                        `
+                            setTimeout(() => {
+                                $insertError.innerHTML = ""
+                            }, 10000);
+                        }
+                    })
+                }
+            })
+        }
+        if(e.target == $btnRegistrar){
+            if($afiliado.value == 0){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor seleccione un afiliado.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else if($servicio.value == 0){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor seleccione un servicio.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+
+            } else if($Nombre.value == ""){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor introduzca los nombres.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else if($Cedula.value == ""){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor introduzca la cédula
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else if($email.value == ""){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor introduzca el correo electronico.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            }else if($emailConfirm.value == ""){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Por favor introduzca la confirmación del correo electronico.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else if($emailConfirm.value != $email.value){
+                $insertError.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <i class="dripicons-wrong me-2"></i>Los correos no coinciden.
+                    </div>
+                `
+                setTimeout(() => {
+                    $insertError.innerHTML = ""
+                }, 10000);
+            } else{
+                //loading with sweetalert
+                Swal.fire({
+                    title: 'Registrando afiliado',
+                    html: 'Por favor espere...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
+
+                let dataEnvio = {
+                    afiliado: $afiliado.value,
+                    servicio: $servicio.value,
+                    nombre: $Nombre.value,
+                    cedula: $Cedula.value,
+                    email: $email.value,
+                }
+
+
+                fetch('/registro/afiliado',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataEnvio)
+                })
+                .then((data) =>{
+                    return data.json()
+                })
+                .then((data) =>{
+                    if(data.ok){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registro exitoso',
+                            text: `Afiliado registrado correctamente.`,
+                        })
+                        .then((result) =>{
+                            location.reload()
+                        })
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${data.msg}`,
+                        })
+                    }
+                })
+
+            }
+        }
+    })
+
+
+</script>
+

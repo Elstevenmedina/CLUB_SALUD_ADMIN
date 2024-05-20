@@ -1,0 +1,178 @@
+<div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-canje">Canje</a></li>
+                    <li class="breadcrumb-item active">Canje puntos</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Canje de puntos</h4>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h4 class="header-title">Médicos con puntos disponibles</h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-centered table-nowrap table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Buscar..." id="buscar">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each medicos}}
+                                        <tr>
+                                            <td>
+                                                <h5 class="font-14 my-1">Médico</h5>
+                                                <span class="text-muted font-13">{{Nombres}} {{Apellidos}}</span>
+                                            </td>
+                                            <td>
+                                                <h5 class="font-14 my-1">Cédula</h5>
+                                                <span class="text-muted font-13">{{Cedula}}</span>
+                                            </td>
+                                            <td>
+                                                <h5 class="font-14 my-1">Puntos disponibles</h5> <br>
+                                                <span class="badge badge-success-lighten">{{PuntosCanjeables}}pts</span>
+                                            </td>
+                                            <td class="">
+                                                <h5 class="font-14 my-1 ">Canjear</h5>
+                                                <a data-_id="{{_id}}" data-puntos="{{PuntosCanjeables}}" data-nombre="{{Nombres}} {{Apellidos}}"
+                                                data-tipo="canjeo" href="javascript:void(0)" class="btn  btn-outline-info"> 
+                                                    Canjear <i class="mdi mdi-cash-fast" style="color: rgb(14, 219, 48); "></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div> <!-- end table-responsive-->
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+    const d = document,
+    tbody = d.querySelector('tbody'),
+    buscar = d.getElementById('buscar');
+
+    buscar.addEventListener('keyup', e=>{
+        let valor = e.target.value.toLowerCase();
+        let tr = tbody.querySelectorAll('tr');
+        tr.forEach(el=>{
+            let nombre = el.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            if(nombre.indexOf(valor) !== -1){
+                el.style.display = '';
+            }else{
+                el.style.display = 'none';
+            }
+        })
+    })
+
+    d.addEventListener('click', e=> {
+        if(e.target.dataset.tipo == "canjeo"){
+            //Generate a SweetAlert popup asking for a date and a amount   
+            let puntos = e.target.dataset.puntos,
+                nombre = e.target.dataset.nombre,
+                _id = e.target.dataset._id; 
+            Swal.fire({
+                title: 'Canjear puntos',
+                html: `
+                    <div class="">
+                        <div class="col-sm-12 text-center">
+                            <h4/>${nombre}<h4>
+                            <p class="text-muted">Puntos disponibles: <b class="text-success">${puntos}</b></p>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="col-sm-12">
+                            <label>Fecha de pago</label>
+                            <input type="date" id="swal-input1" class="form-control" placeholder="Fecha de pago">
+                        <div>
+                        <div class="col-sm-12">
+                            <label>Puntos</label>
+                            <input type="number" id="swal-input2" max="${puntos}" class="form-control" placeholder="Puntos a canjear">
+                        <div>
+                        <div class="col-sm-12">
+                            <label>ID de Transacción</label>
+                            <input type="text" id="swal-input3" class="form-control" placeholder="ID de Transacción">
+                        <div>
+                    <div>
+                    
+                    `,
+                focusConfirm: false,
+                preConfirm: () => {
+                    const fecha = Swal.getPopup().querySelector('#swal-input1').value
+                    const puntos = Swal.getPopup().querySelector('#swal-input2').value
+                    const idTransaccion = Swal.getPopup().querySelector('#swal-input3').value
+                    const maximo = Swal.getPopup().querySelector('#swal-input2').max
+                    if (+puntos > +maximo) {
+                        Swal.showValidationMessage(`No puedo ingresar una cantidad mayor de puntos a la disponible`)
+                    }
+                    if (!idTransaccion) {
+                        Swal.showValidationMessage(`Por favor ingrese el ID de la transacción bancaria`)
+                    }
+                    if (!puntos) {
+                        Swal.showValidationMessage(`Por favor ingrese la cantidad de puntos a canjear`)
+                    }
+                    if (!fecha) {
+                        Swal.showValidationMessage(`Por favor ingrese la fecha del pago`)
+                    }
+                    return { puntos: puntos, fecha: fecha, idTransaccion: idTransaccion }
+                }
+            }).then((result) => {
+                if (result.value) {
+                    let id = e.target.dataset._id;
+                    let puntos = result.value.puntos;
+                    let fecha = result.value.fecha;
+                    let idTransaccion = result.value.idTransaccion;
+                    fetch('/canje/canjear-puntos', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id, 
+                            fecha,
+                            idTransaccion,
+                            puntos
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.ok){
+                            let linea = e.target.parentElement.parentElement;
+                            linea.children[2].lastElementChild.textContent = `${data.puntos}pts`;
+                            Swal.fire({
+                                title: 'Canje exitoso',
+                                text: 'Los puntos han sido canjeados',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            })
+                        }else{
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'No se pudo canjear los puntos',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+</script>

@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-examenes">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Correos pendientes</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Correos pendientes</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha de la solicitud</th>
+                                <th>Fecha de atención</th>
+                                <th>Sucursal</th>
+                                <th>Paciente</th>
+                                <th>Documento del paciente</th>
+                                <th>Médico</th>
+                                <th>Documento médico</th>
+                                <th>Observación</th>
+                                <th>Resultados</th>
+                                <th>Enviar correo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each soliciutdes}}                            
+                                <tr>
+                                    <td><a href="#" class="text-info examen">{{Numero}}</a></td>
+                                    <td>{{Fecha}}</td>
+                                    <td>{{FechaAtencion}}</td>
+                                    <td>{{Sucursal}}</td>
+                                    <td>{{Paciente}}</td>
+                                    <td>{{DocumentoPaciente}}</td>
+                                    <td>{{Medico}}</td>
+                                    <td>{{CedulaMedico}}</td>
+                                    <td>{{Observacion}}</td>
+                                    <td>
+                                        <a  class="btn btn-outline-info resultados" data-numero="{{Numero}}" href="javascript:void(0)">
+                                            <i class="mdi mdi-eye"></i> Ver
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a  class="btn btn-outline-success btnEnviarCorreo" data-numero="{{Numero}}" data-_id="{{_id}}" href="javascript:void(0)">
+                                            <i class="mdi mdi-eye"></i> Enviar correo
+                                        </a>
+                                    </td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/info-examenes.js"></script>
+<script src="/js/admin/servicios/info-resultados.js"></script>
+<script>
+    document.addEventListener('click', e=>{
+        if(e.target.matches('.btnEnviarCorreo')){
+            Swal.fire({
+            title: `¿Estás seguro de querer enviar por correo la solicitud #${e.target.dataset.numero}?`,
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, enviar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.value) {
+                swal.fire({
+                    title: 'Enviando correos electronicos...',
+                    html: `
+                    <div class="my-3 spinner-border avatar-lg text-success" role="status"></div>
+                    `,
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    showConfirmButton: false
+                }).then((data) =>{
+                })
+                axios.post(`/enviar-correos-electronicos/${e.target.dataset._id}`)
+                .then((res) =>{
+                    location.reload()
+                })
+            }
+        })
+    }
+    })
+</script>

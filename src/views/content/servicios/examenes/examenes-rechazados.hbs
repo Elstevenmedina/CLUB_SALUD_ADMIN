@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="/inicio">Club Salud</a></li>
+                    <li class="breadcrumb-item"><a href="/area-examenes">Solicitudes</a></li>
+                    <li class="breadcrumb-item active">Rechazadas</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Solicitudes rechazadas</h4>
+        </div>
+    </div>
+    <div class="col-sm-12 my-2" id="insertError"></div>
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Fecha de la solicitud</th>
+                                <th>Fecha de rechazo</th>
+                                <th>Sucursal</th>
+                                <th>Tipo</th>
+                                <th>Paciente</th>
+                                <th>Documento del paciente</th>
+                                <th>Médico</th>
+                                <th>Motivo de rechazo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each examenes}}                            
+                                <tr>
+                                    <td><a href="#" class="text-info examen">{{Numero}}</a></td>
+                                    <td>{{Fecha}}</td>
+                                    <td>{{FechaRechazo}}</td>
+                                    <td>{{Sucursal}}</td>
+                                    <td>{{Tipo}}</td>
+                                    <td>{{Paciente}}</td>
+                                    <td>{{DocumentoPaciente}}</td>
+                                    <td>{{Medico}}</td>
+                                    <td>{{ObservacionRechazo}}</td>
+                                </tr>
+                            {{/each}}                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script src="/js/admin/servicios/info-examenes.js"></script>
