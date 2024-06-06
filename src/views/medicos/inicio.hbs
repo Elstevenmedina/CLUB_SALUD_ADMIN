@@ -56,7 +56,7 @@
                         <i class="mdi mdi-archive widget-icon-info"></i>
                     </div>
                     <h5 class="text-muted fw-normal mt-0" title="Number of Customers">Puntos totales</h5>
-                    <h3 class="mt-3 mb-3" id="PuntosCanjeados">36,254</h3>
+                    <h3 class="mt-3 mb-3" id="PuntosObtenidos">0</h3>
                 </div> <!-- end card-body-->
             </div>
         </div>
@@ -131,6 +131,7 @@
     const d = document,
     $PuntosCanjeables = d.getElementById('PuntosCanjeables'),
     $PuntosCanjeados = d.getElementById('PuntosCanjeados'),
+    $PuntosObtenidos = d.getElementById('PuntosObtenidos'),
     $progressbar = d.getElementById('progressbar');
 
     fetch('/solicitar-datos-puntos-medico',{
@@ -143,7 +144,6 @@
     }).then((data) =>{
         let valorPuntos = data.PuntosObtenidos
         let recorrido = 0
-        console.log(data)
         let cargarProgress = setInterval(() => {
             if((recorrido + 5) > valorPuntos){
                 $progressbar.style.width = (+valorPuntos * +data.factor) + '%';
@@ -175,6 +175,15 @@
             }else{
                 recorrido += 5
                 $PuntosCanjeados.textContent = recorrido
+            }
+        }, 150);
+        let cargarTexto3 = setInterval(() => {
+            if((recorrido + 5) > data.PuntosObtenidos){
+                $PuntosObtenidos.textContent = data.PuntosObtenidos
+                clearInterval(cargarTexto3);
+            }else{
+                recorrido += 5
+                $PuntosObtenidos.textContent = recorrido
             }
         }, 150);
     })

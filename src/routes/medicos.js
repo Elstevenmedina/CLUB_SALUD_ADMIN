@@ -1981,6 +1981,7 @@ router.post('/solicitar-datos-puntos-medico', isAuthenticatedMedico, async(req, 
             PuntosObtenidos: puntosObtenidos,
             PuntosCanjeables: medico.PuntosCanjeables,
             PuntosCanjeados: medico.PuntosCanjeados,
+            PuntosObtenidos: medico.PuntosObtenidos,
             factor: factor,
         }
         res.send(JSON.stringify(data))

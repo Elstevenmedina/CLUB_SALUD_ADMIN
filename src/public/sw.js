@@ -1,5 +1,5 @@
-const CACHE_NAME = "my-cache-v32";
-const CACHE_VERSION = 32;
+const CACHE_NAME = "my-cache-v33";
+const CACHE_VERSION = 33;
 
 const urlsToCache = [
   "/",
