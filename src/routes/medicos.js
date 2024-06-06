@@ -62,6 +62,19 @@ cloudinary.config({
 router.get('/inicio-medicos', isAuthenticatedMedico, async(req, res, next) => {
     try {
         let medico = await medicoDB.findOne({ Cedula: req.user.Cedula })
+        let historial = await historialPuntosDB.findOne({ _idMedico: medico._id }).sort({ Timestamp: -1 }).lean()
+
+        historial = historial ? historial.Historial : []
+        historial.sort(function(a, b) {
+            if (a.Timestamp > b.Timestamp) {
+                return -1;
+            }
+            if (a.Timestamp < b.Timestamp) {
+                return 1;
+            }
+            return 0;
+        });
+
 
         let medallaBronce = await medallasDB.findOne({ Nombre: 'Bronce' })
         let medallaPlata = await medallasDB.findOne({ Nombre: 'Plata' })
@@ -139,7 +152,8 @@ router.get('/inicio-medicos', isAuthenticatedMedico, async(req, res, next) => {
             notificaciones,
             examenes,
             dataPuntos,
-            RutaImage: req.user.RutaImage
+            RutaImage: req.user.RutaImage,
+            historial
         })
 
     } catch (err) {

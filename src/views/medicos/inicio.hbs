@@ -76,30 +76,37 @@
         </div>
         <div class="col-xl-12 col-lg-12 order-lg-2 order-xl-1">
             <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="header-title">SOLICITUDES ATENDIDAS RECIENTEMENTE</h4>
+                <div class="card-header bg-primary text-center ">
+                    <div class="d-flex justify-content-between align-items-center mb-2 ">
+                        <h4 class="text-white">HISTORIAL DE PUNTOS</h4>
                     </div>
-
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-centered table-nowrap table-hover mb-0">
+                        <table id="basic-datatable" class="table table-striped dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Tipo</th>
+                                    <th class="text-center">Paciente</th>
+                                    <th class="text-center">Puntos anteriores</th>
+                                    <th class="text-center">Puntos ajustados</th>
+                                    <th class="text-center">Puntos actuales</th>
+                                    <th class="text-center">Comentario</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                {{#each examenes}}
-                                    <tr>
-                                        <td>
-                                            <h5 class="font-14 my-1 fw-normal">{{Paciente}}</h5>
-                                            <span class="text-muted font-13">{{FechaAtencion}}</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="font-14 my-1 fw-normal">{{PuntosTotales}}</h5>
-                                            <span class="text-muted font-13">Puntos totales</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="font-14 my-1 fw-normal">{{PuntosMedico}}</h5>
-                                            <span class="text-muted font-13">Puntos obtenidos</span>
-                                        </td>
+                                {{#each historial}}                            
+                                    <tr class="text-{{Color}}">
+                                        <td class="text-center">{{Fecha}}</td>
+                                        <td class="text-center">{{TipoMovimiento}}</td>
+                                        <td class="text-center">{{Paciente}}</td>
+                                        <td class="text-center">{{PuntosAnteriores}}</td>
+                                        <td class="text-center">{{PuntosMovidos}}</td>
+                                        <td class="text-center">{{PuntosActuales}}</td>
+                                        <td class="text-center">{{Comentario}}</td>
                                     </tr>
-                                {{/each}}
+                                {{/each}}                            
                             </tbody>
                         </table>
                     </div> <!-- end table-responsive-->
